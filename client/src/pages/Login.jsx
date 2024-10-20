@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const toggleLogin = () => setIsLogin((prev) => !prev);
   return (
     <Box
       bgcolor={"background.default"}
@@ -16,7 +17,7 @@ const Login = () => {
       height={"100vh"}
       sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
     >
-      <Container component={"main"} maxWidth="sm">
+      <Container component={"main"} maxWidth="xs">
         <Paper
           elevation={4}
           variant="outlined"
@@ -33,8 +34,8 @@ const Login = () => {
             <>
               <TextField
                 variant="outlined"
-                type="email"
-                label="Email"
+                type="text"
+                label="Username"
                 required
                 fullWidth
                 margin="normal"
@@ -60,8 +61,16 @@ const Login = () => {
               />
               <TextField
                 variant="outlined"
-                type="email"
-                label="Email"
+                type="text"
+                label="Bio"
+                required
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                variant="outlined"
+                type="text"
+                label="Username"
                 required
                 fullWidth
                 margin="normal"
@@ -76,30 +85,32 @@ const Login = () => {
               />
             </>
           )}
-          <Button variant="contained" color="primary" size="large" fullWidth sx={{ my: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            fullWidth
+            sx={{ my: 2 }}
+          >
             {isLogin ? "Login" : "Register"}
           </Button>
-          {isLogin ? (
-            <Typography
-              sx={{ cursor: "pointer" }}
-              onClick={() => setIsLogin(false)}
-            >
-              If you new here then!{" "}
-              <Typography component="span" color="primary">
-                Register
-              </Typography>
-            </Typography>
-          ) : (
-            <Typography
-              sx={{ cursor: "pointer" }}
-              onClick={() => setIsLogin(true)}
-            >
-              Already have an account?{" "}
-              <Typography component="span" color="primary">
-                Login
-              </Typography>
-            </Typography>
-          )}
+          <Typography sx={{ cursor: "pointer" }} onClick={() => toggleLogin()}>
+            {isLogin ? (
+              <>
+                Don't have an account?{" "}
+                <Typography component="span" color="primary">
+                  Register
+                </Typography>
+              </>
+            ) : (
+              <>
+                Already have an account?{" "}
+                <Typography component="span" color="primary">
+                  Login
+                </Typography>
+              </>
+            )}
+          </Typography>
         </Paper>
       </Container>
     </Box>
