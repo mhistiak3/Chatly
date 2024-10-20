@@ -13,10 +13,11 @@ const Home = lazy(() => import("./pages/Home.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Chat = lazy(() => import("./pages/Chat.jsx"));
 const Group = lazy(() => import("./pages/Group.jsx"));
-
+import { Toaster } from 'react-hot-toast'
 const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
+      <Toaster/>
       <BrowserRouter>
         <Routes>
           <Route

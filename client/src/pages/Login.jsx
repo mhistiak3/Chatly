@@ -11,10 +11,49 @@ import {
 } from "@mui/material";
 import { CameraAlt } from "@mui/icons-material";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { VisuallyHiddenInput } from "../components/StyledComponent";
+import { validateProfileForm } from "../utils/validators";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  // form state
+  const [form, setForm] = useState({
+    name: "",
+    bio: "",
+    username: "",
+    password: "",
+  });
+  const [avatar, setAvatar] = useState(null);
   const toggleLogin = () => setIsLogin((prev) => !prev);
+  const handleInputChnage = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      // validation
+      const errors = validateProfileForm(form);
+      if (errors.username) return toast.error(errors.username);
+      if (errors.password) return toast.error(errors.password);
+
+      
+    } else {
+      // validation
+      const errors = validateProfileForm(form);
+      if (!avatar) return toast.error("Please select an avatar");
+     if(errors.name) return toast.error(errors.name);
+     if (errors.bio) return toast.error(errors.bio);
+     if(errors.username) return toast.error(errors.username);
+     if(errors.password) return toast.error(errors.password);
+     
+
+      
+    }
+  };
   return (
     <Box
       bgcolor={"background.default"}
@@ -24,6 +63,8 @@ const Login = () => {
     >
       <Container component={"main"} maxWidth="xs">
         <Paper
+          component={"form"}
+          onSubmit={handleSubmit}
           variant="outlined"
           sx={{
             padding: 4,
@@ -41,18 +82,24 @@ const Login = () => {
               <TextField
                 variant="outlined"
                 type="text"
+                name="username"
                 label="Username"
                 required
                 fullWidth
                 margin="normal"
+                value={form.username}
+                onChange={handleInputChnage}
               />
               <TextField
                 type="password"
                 variant="outlined"
                 label="Password"
+                name="password"
                 required
                 fullWidth
                 margin="normal"
+                value={form.password}
+                onChange={handleInputChnage}
               />
             </>
           ) : (
@@ -73,7 +120,11 @@ const Login = () => {
                   component="label"
                   htmlFor="avatar"
                 >
-                  <VisuallyHiddenInput type="file" id="avatar" />
+                  <VisuallyHiddenInput
+                    type="file"
+                    id="avatar"
+                    onChange={(e) => setAvatar(e.target.files[0])}
+                  />
                   <IconButton
                     aria-label="Upload Avatar"
                     component="span"
@@ -94,6 +145,9 @@ const Login = () => {
                 required
                 fullWidth
                 margin="normal"
+                name="name"
+                value={form.name}
+                onChange={handleInputChnage}
               />
               <TextField
                 variant="outlined"
@@ -102,6 +156,9 @@ const Login = () => {
                 required
                 fullWidth
                 margin="normal"
+                name="bio"
+                value={form.bio}
+                onChange={handleInputChnage}
               />
               <TextField
                 variant="outlined"
@@ -110,6 +167,9 @@ const Login = () => {
                 required
                 fullWidth
                 margin="normal"
+                name="username"
+                value={form.username}
+                onChange={handleInputChnage}
               />
               <TextField
                 type="password"
@@ -118,10 +178,14 @@ const Login = () => {
                 required
                 fullWidth
                 margin="normal"
+                name="password"
+                value={form.password}
+                onChange={handleInputChnage}
               />
             </>
           )}
           <Button
+            type="submit"
             variant="contained"
             color="primary"
             size="large"
