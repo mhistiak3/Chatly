@@ -5,8 +5,13 @@ import {
   Paper,
   TextField,
   Typography,
+  Stack,
+  Avatar,
+  IconButton,
 } from "@mui/material";
+import { CameraAlt } from "@mui/icons-material";
 import { useState } from "react";
+import { VisuallyHiddenInput } from "../components/StyledComponent";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const toggleLogin = () => setIsLogin((prev) => !prev);
@@ -19,7 +24,6 @@ const Login = () => {
     >
       <Container component={"main"} maxWidth="xs">
         <Paper
-          elevation={4}
           variant="outlined"
           sx={{
             padding: 4,
@@ -29,7 +33,9 @@ const Login = () => {
             flexDirection: "column",
           }}
         >
-          <Typography variant="h4">{isLogin ? "Login" : "Register"}</Typography>
+          <Typography variant="h4">
+            {isLogin ? "Login" : "Create account"}
+          </Typography>
           {isLogin ? (
             <>
               <TextField
@@ -51,6 +57,36 @@ const Login = () => {
             </>
           ) : (
             <>
+              <Stack
+                position="relative"
+                width="8rem"
+                marginX="auto"
+                marginY="15px"
+              >
+                <Avatar
+                  sx={{ width: "8rem", height: "8rem", objectFit: "cover" }}
+                />
+                <Box
+                  position="absolute"
+                  bottom={0}
+                  right={0}
+                  component="label"
+                  htmlFor="avatar"
+                >
+                  <VisuallyHiddenInput type="file" id="avatar" />
+                  <IconButton
+                    aria-label="Upload Avatar"
+                    component="span"
+                    sx={{
+                      backgroundColor: "primary.main",
+                      ":hover": { backgroundColor: "primary.dark" },
+                      padding: "5px",
+                    }}
+                  >
+                    <CameraAlt sx={{ fontSize: "1.5rem" }} />
+                  </IconButton>
+                </Box>
+              </Stack>
               <TextField
                 variant="outlined"
                 type="text"
