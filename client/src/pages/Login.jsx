@@ -14,6 +14,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { VisuallyHiddenInput } from "../components/StyledComponent";
 import { validateProfileForm } from "../utils/validators";
+import getImagePreview from "../utils/getImagePreview";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   // form state
@@ -24,6 +25,7 @@ const Login = () => {
     password: "",
   });
   const [avatar, setAvatar] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const toggleLogin = () => setIsLogin((prev) => !prev);
   const handleInputChnage = (e) => {
     const { name, value } = e.target;
@@ -32,6 +34,12 @@ const Login = () => {
       [name]: value,
     }));
   };
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
+    const preview = await getImagePreview(file);
+    setAvatarPreview(preview)
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
@@ -39,19 +47,14 @@ const Login = () => {
       const errors = validateProfileForm(form);
       if (errors.username) return toast.error(errors.username);
       if (errors.password) return toast.error(errors.password);
-
-      
     } else {
       // validation
       const errors = validateProfileForm(form);
       if (!avatar) return toast.error("Please select an avatar");
-     if(errors.name) return toast.error(errors.name);
-     if (errors.bio) return toast.error(errors.bio);
-     if(errors.username) return toast.error(errors.username);
-     if(errors.password) return toast.error(errors.password);
-     
-
-      
+      if (errors.name) return toast.error(errors.name);
+      if (errors.bio) return toast.error(errors.bio);
+      if (errors.username) return toast.error(errors.username);
+      if (errors.password) return toast.error(errors.password);
     }
   };
   return (
@@ -111,6 +114,7 @@ const Login = () => {
                 marginY="15px"
               >
                 <Avatar
+                 src={avatar && avatarPreview}
                   sx={{ width: "8rem", height: "8rem", objectFit: "cover" }}
                 />
                 <Box
@@ -123,7 +127,9 @@ const Login = () => {
                   <VisuallyHiddenInput
                     type="file"
                     id="avatar"
-                    onChange={(e) => setAvatar(e.target.files[0])}
+                    name="avatar"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
                   />
                   <IconButton
                     aria-label="Upload Avatar"
