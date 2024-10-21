@@ -1,6 +1,10 @@
+import { AppLayout } from "../components"
+
+
+
 const Group = () => {
   return (
     <div>Group</div>
   )
 }
-export default Group
+export default AppLayout()(Group)

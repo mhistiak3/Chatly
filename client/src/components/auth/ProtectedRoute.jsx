@@ -1,14 +1,17 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 export const ProtectedRoute = ({ children, user, redirect = "/login" }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(user);
+
     if (!user) {
       return navigate(redirect);
     }
   }, []);
+
   if (user) {
-    return <>{children}</>;
+    return children ? children : <Outlet />;
   }
 };

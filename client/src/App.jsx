@@ -12,41 +12,47 @@ const Home = lazy(() => import("./pages/Home.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Chat = lazy(() => import("./pages/Chat.jsx"));
 const Group = lazy(() => import("./pages/Group.jsx"));
+const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 import { Toaster } from "react-hot-toast";
 import { Loading, ProtectedRoute } from "./components";
 const App = () => {
+  const user = true;
   return (
     <ThemeProvider theme={darkTheme}>
       <Toaster />
       <BrowserRouter>
         <Routes>
+          <Route element={<ProtectedRoute user={user} />}>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/chat/:chatId"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Chat />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/groups"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Group />
+                </Suspense>
+              }
+            />
+          </Route>
+
           <Route
-            path="/"
+            path="/login"
             element={
-              <ProtectedRoute user={false}>
-                <Home />
+              <ProtectedRoute user={!user} redirect="/">
+                <Login />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/chat/:chatId"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Chat />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/group"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Group />
-              </Suspense>
-            }
-          />
-
-          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
+
       </BrowserRouter>
     </ThemeProvider>
   );
