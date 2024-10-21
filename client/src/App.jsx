@@ -1,31 +1,31 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import Loading from "./components/Loading.jsx";
-import { ThemeProvider } from '@mui/material';
-import darkTheme from './utils/DarkTheme.js';
+import { ThemeProvider } from "@mui/material";
+import darkTheme from "./utils/DarkTheme.js";
 
 const Home = lazy(() => import("./pages/Home.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Chat = lazy(() => import("./pages/Chat.jsx"));
 const Group = lazy(() => import("./pages/Group.jsx"));
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from "react-hot-toast";
+import { Loading, ProtectedRoute } from "./components";
 const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
-      <Toaster/>
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route
             path="/"
             element={
-              <Suspense fallback={<Loading />}>
+              <ProtectedRoute user={false}>
                 <Home />
-              </Suspense>
+              </ProtectedRoute>
             }
           />
           <Route

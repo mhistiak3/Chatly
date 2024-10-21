@@ -12,9 +12,10 @@ import {
 import { CameraAlt } from "@mui/icons-material";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { VisuallyHiddenInput } from "../components/StyledComponent";
+
 import { validateProfileForm } from "../utils/validators";
 import getImagePreview from "../utils/getImagePreview";
+import { VisuallyHiddenInput } from "../components";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   // form state

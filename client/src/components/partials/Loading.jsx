@@ -1,4 +1,4 @@
-import React from "react";
+
 import { CircularProgress, Box } from "@mui/material";
 import { keyframes } from "@emotion/react";
 import { styled } from "@mui/system";
@@ -15,7 +15,7 @@ const AnimatedSpinner = styled(CircularProgress)`
   color: purple;
 `;
 
-const LoadingPage = () => {
+export const Loading = () => {
   return (
     <Box
       sx={{
@@ -31,4 +31,4 @@ const LoadingPage = () => {
   );
 };
 
-export default LoadingPage;
+
