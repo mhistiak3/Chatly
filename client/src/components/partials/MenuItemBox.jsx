@@ -8,7 +8,7 @@ import {
 import { Box } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const MenuItemBox = () => {
+const MenuItemBox = ({ openNewGroup }) => {
   const navigate = useNavigate();
   const [newGroup, setNewGroup] = useState(false);
   const navigateToGroups = () => {
@@ -17,9 +17,7 @@ const MenuItemBox = () => {
   const navigateToChats = () => {
     navigate("/");
   };
-  const openNewGroup = () => {
-      setNewGroup((prev) => !prev);
-  }
+
   const logoutHandler = () => {};
   return (
     <Box
@@ -86,6 +84,7 @@ const MenuItemBox = () => {
         <GroupsIcon /> Groups
       </Box>
       <Box
+      onClick={openNewGroup}
         sx={{
           padding: " 12px 20px",
           transition: "0.5s",

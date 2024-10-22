@@ -14,7 +14,7 @@ const Chat = lazy(() => import("./pages/Chat.jsx"));
 const Group = lazy(() => import("./pages/Group.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 import { Toaster } from "react-hot-toast";
-import { Loading, ProtectedRoute } from "./components";
+import { LayoutLoader, ProtectedRoute } from "./components";
 const App = () => {
   const user = true;
   return (
@@ -23,19 +23,26 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route element={<ProtectedRoute user={user} />}>
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<LayoutLoader />}>
+                  <Home />
+                </Suspense>
+              }
+            />
             <Route
               path="/chat/:chatId"
               element={
-                <Suspense fallback={<Loading />}>
+                
                   <Chat />
-                </Suspense>
+              
               }
             />
             <Route
               path="/groups"
               element={
-                <Suspense fallback={<Loading />}>
+                <Suspense fallback={<LayoutLoader />}>
                   <Group />
                 </Suspense>
               }
@@ -52,7 +59,6 @@ const App = () => {
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
-
       </BrowserRouter>
     </ThemeProvider>
   );

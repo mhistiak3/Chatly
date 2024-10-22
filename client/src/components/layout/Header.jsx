@@ -1,6 +1,7 @@
 import {
   AppBar,
   Avatar,
+  Backdrop,
   Badge,
   Box,
   IconButton,
@@ -15,14 +16,17 @@ import {
 } from "@mui/icons-material";
 import MenuItemBox from "../partials/MenuItemBox";
 import { lazy, Suspense, useState } from "react";
-import { Loading } from "../partials/Loading";
+import {MediumLoading}from '..'
 
 const SearchDialog = lazy(() => import("../partials/Search"));
+const NotificationsDialog = lazy(() => import("../partials/Notifications"));
+const NewGroupDialog = lazy(() => import("../partials/NewGroup"));
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const [isNotifications, setIsNotifications] = useState(false);
+   const [newGroup, setNewGroup] = useState(false);
 
   const handleMobile = () => {
     setMobile((prev) => !prev);
@@ -35,6 +39,9 @@ const Header = () => {
   const openNotifications = () => {
     setIsNotifications((prev) => !prev);
   };
+   const openNewGroup = () => {
+     setNewGroup((prev) => !prev);
+   };
   const toggleDrawer = () => {
     setOpenMenu((prev) => !prev);
   };
@@ -42,7 +49,6 @@ const Header = () => {
     <Box
       sx={{
         flexGrow: 1,
-      
       }}
     >
       <AppBar
@@ -120,14 +126,24 @@ const Header = () => {
                 fontSize="large"
               />
             </Box>
-            {openMenu && <MenuItemBox />}
+            {openMenu && <MenuItemBox openNewGroup={openNewGroup} />}
           </Box>
         </Toolbar>
       </AppBar>
 
       {isSearch && (
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Backdrop open />}>
           <SearchDialog />
+        </Suspense>
+      )}
+      {isNotifications && (
+        <Suspense fallback={<Backdrop open />}>
+          <NotificationsDialog />
+        </Suspense>
+      )}
+      {newGroup && (
+        <Suspense fallback={<Backdrop open />}>
+          <NewGroupDialog />
         </Suspense>
       )}
     </Box>
