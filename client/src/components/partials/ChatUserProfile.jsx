@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import CloseIcon from "@mui/icons-material/Close";
+import Attachment from "./Attachment";
 
 const ChatUserProfile = ({
   name,
@@ -102,12 +103,20 @@ const ChatUserProfile = ({
                   rel="noopener"
                 >
                   <CardMedia
+                    
+                    sx={{ objectFit: "cover", borderRadius: "8px" }}
+                    height="100"
+                 
+                  >
+                    <Attachment url={media[0]?.url} />
+                  </CardMedia>
+                  {/* <CardMedia
                     component="img"
+                    sx={{ objectFit: "cover", borderRadius: "8px" }}
                     height="100"
                     image={media[0]?.url}
                     alt={`Media ${index + 1}`}
-                    sx={{ objectFit: "cover", borderRadius: "8px" }}
-                  />
+                  /> */}
                 </Card>
               </Grid>
             ))}

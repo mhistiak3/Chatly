@@ -183,7 +183,12 @@ export const sampleMessages = [
       id: "returnedId",
       name: "Jane Smith",
     },
-    attachments: [],
+    attachments: [
+      {
+        public_id: "3333",
+        url: "https://cdn.ostad.app/resource/2024-06-01T18-21-22.629Z-JavaScript%20Foundation.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=HS6GNL2AXI5U7JE4M7Q7%2F20241023%2Fsgp1%2Fs3%2Faws4_request&X-Amz-Date=20241023T203543Z&X-Amz-Expires=60&X-Amz-Signature=7272c4576ea1b9554a0ab2f92f3d9f3bfdc4b548760b0de5f5123050fad92ac2&X-Amz-SignedHeaders=host&x-id=GetObject",
+      },
+    ],
   },
   {
     id: 9,
@@ -193,7 +198,12 @@ export const sampleMessages = [
       id: "123",
       name: "John Doe",
     },
-    attachments: [],
+    attachments: [
+      {
+        public_id: "3333",
+        url: "https://files.catbox.moe/4abc2w.mp3",
+      },
+    ],
   },
   {
     id: 10,
@@ -206,7 +216,7 @@ export const sampleMessages = [
     attachments: [
       {
         public_id: "3333",
-        url: "https://randomuser.me/api/portraits/women/5.jpg",
+        url: "https://videos.pexels.com/video-files/6548176/6548176-hd_1920_1080_24fps.mp4",
       },
     ],
   },

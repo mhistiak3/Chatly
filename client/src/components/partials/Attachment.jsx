@@ -18,14 +18,14 @@ const Attachment = ({ url }) => {
   const fileType = getFileType(url);
 
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer">
+    <Box component={"a"} href={url} target="_blank" rel="noopener noreferrer">
       {fileType === "image" && (
         <Box
           component="img"
           src={url}
           alt="attachment"
           sx={{
-            width: "100%",
+            
             height: "auto",
             borderRadius: "8px",
             marginBottom: "0.5rem",
@@ -39,7 +39,7 @@ const Attachment = ({ url }) => {
           src={url}
           alt="video attachment"
           sx={{
-            width: "100%",
+            width: "300px",
             height: "auto",
             borderRadius: "8px",
             marginBottom: "0.5rem",
@@ -77,7 +77,7 @@ const Attachment = ({ url }) => {
           <Box sx={{ marginLeft: "0.5rem" }}>Download file</Box>
         </Box>
       )}
-    </a>
+    </Box>
   );
 };
 
