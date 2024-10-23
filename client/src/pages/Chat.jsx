@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { AppLayout } from "../components";
 import {
   Box,
@@ -8,6 +8,7 @@ import {
   TextField,
   Stack,
   Divider,
+  Backdrop,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
@@ -18,8 +19,12 @@ import {
   AudioFile,
   FileCopy,
 } from "@mui/icons-material";
+const ChatUserProfile = lazy(() =>
+  import("../components/partials/ChatUserProfile")
+);
 
 const Chat = () => {
+  const [chatUserProfileDialog, setChatUserProfileDialog] = useState(false);
   const [message, setMessage] = useState("");
   const [showUploadOptions, setShowUploadOptions] = useState(false);
   const [messages, setMessages] = useState([
@@ -32,6 +37,8 @@ const Chat = () => {
     name: "Istiak Ahammad",
     image: "https://avatars.githubusercontent.com/u/65768155?s=400",
     status: "Active now",
+    joinDate: "2024-10-23T12:55:43.620Z",
+    bio: "I am a professional Web Developer. I am very passionate and dedicated to my work.",
   };
 
   const handleSendMessage = () => {
@@ -58,6 +65,9 @@ const Chat = () => {
     document.getElementById(inputId).click();
   };
 
+  const openChatUserProfile = () => {
+    setChatUserProfileDialog((prev) => !prev);
+  };
   return (
     <Box
       sx={{
@@ -71,6 +81,21 @@ const Chat = () => {
       }}
     >
       {/* Top Section: User Info */}
+      {chatUserProfileDialog && (
+        <Suspense fallback={<Backdrop open />}>
+          <ChatUserProfile
+            open={chatUserProfileDialog}
+            onClose={openChatUserProfile}
+            name={user.name}
+            avatar={user.image}
+            username={user.name}
+            bio={user.bio}
+            joinDate={user.joinDate}
+            allMediaInChat={[
+              { id: 1, type: "image", url: "https://picsum.photos/200" },]}
+          />
+        </Suspense>
+      )}
       <Box
         sx={{
           padding: "1rem",
@@ -84,7 +109,7 @@ const Chat = () => {
           alt={user.name}
           sx={{ width: 50, height: 50, marginRight: "1rem" }}
         />
-        <Box>
+        <Box sx={{ cursor: "pointer" }} onClick={openChatUserProfile}>
           <Typography variant="h6">{user.name}</Typography>
           <Typography variant="body2" color="gray">
             {user.status}

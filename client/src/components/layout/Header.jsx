@@ -16,7 +16,6 @@ import {
 } from "@mui/icons-material";
 import MenuItemBox from "../partials/MenuItemBox";
 import { lazy, Suspense, useState } from "react";
-import {MediumLoading}from '..'
 
 const SearchDialog = lazy(() => import("../partials/Search"));
 const NotificationsDialog = lazy(() => import("../partials/Notifications"));
