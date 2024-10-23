@@ -75,3 +75,24 @@ export const smapleUsers = [
     avatar: "https://randomuser.me/api/portraits/men/4.jpg",
   },
 ];
+// Dummy notification data
+export const smapleNotifications = [
+  {
+    id: 1,
+    sender: {
+      name: "John Doe",
+      avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    time: "2 mins ago",
+    chatId: "2",
+  },
+  {
+    id: 2,
+    sender: {
+      name: "iA Coder",
+      avatar: "https://randomuser.me/api/portraits/men/2.jpg",
+    },
+    time: "5 mins ago",
+    chatId: "2",
+  },
+];

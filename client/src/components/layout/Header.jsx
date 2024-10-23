@@ -139,12 +139,12 @@ const Header = () => {
       )}
       {isNotifications && (
         <Suspense fallback={<Backdrop open />}>
-          <NotificationsDialog />
+          <NotificationsDialog open={isNotifications} onClose={openNotifications} />
         </Suspense>
       )}
       {newGroup && (
         <Suspense fallback={<Backdrop open />}>
-          <NewGroupDialog />
+          <NewGroupDialog open={newGroup} onClose={openNewGroup} />
         </Suspense>
       )}
     </Box>
