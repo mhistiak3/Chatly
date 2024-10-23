@@ -15,6 +15,7 @@ const Group = lazy(() => import("./pages/Group.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 import { Toaster } from "react-hot-toast";
 import { LayoutLoader, ProtectedRoute } from "./components";
+import Profile from "./pages/Profile.jsx";
 const App = () => {
   const user = true;
   return (
@@ -31,19 +32,20 @@ const App = () => {
                 </Suspense>
               }
             />
-            <Route
-              path="/chat/:chatId"
-              element={
-                
-                  <Chat />
-              
-              }
-            />
+            <Route path="/chat/:chatId" element={<Chat />} />
             <Route
               path="/groups"
               element={
                 <Suspense fallback={<LayoutLoader />}>
                   <Group />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <Suspense fallback={<LayoutLoader />}>
+                  <Profile />
                 </Suspense>
               }
             />

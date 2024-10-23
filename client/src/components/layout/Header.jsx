@@ -27,13 +27,14 @@ const Header = () => {
   const [isSearch, setIsSearch] = useState(false);
   const [isNotifications, setIsNotifications] = useState(false);
    const [newGroup, setNewGroup] = useState(false);
+   
 
   const handleMobile = () => {
     setMobile((prev) => !prev);
   };
   const openSearch = () => {
     setIsSearch((prev) => !prev);
-    console.log(isSearch);
+   
     
   };
   const openNotifications = () => {

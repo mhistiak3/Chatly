@@ -7,7 +7,7 @@ import {
 } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const MenuItemBox = ({ openNewGroup }) => {
   const navigate = useNavigate();
   const [newGroup, setNewGroup] = useState(false);
@@ -31,15 +31,20 @@ const MenuItemBox = ({ openNewGroup }) => {
         display: "flex",
         flexDirection: "column",
         borderRadius: "4px",
+        zIndex: 10,
       }}
     >
       <Box
+        component={Link}
+        to="/profile"
         sx={{
           padding: " 12px 20px",
           transition: "0.5s",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
+          textDecoration: "none",
+          color: "#fff",
           gap: "5px",
           ":hover": {
             backgroundColor: "primary.main",
@@ -84,7 +89,7 @@ const MenuItemBox = ({ openNewGroup }) => {
         <GroupsIcon /> Groups
       </Box>
       <Box
-      onClick={openNewGroup}
+        onClick={openNewGroup}
         sx={{
           padding: " 12px 20px",
           transition: "0.5s",
