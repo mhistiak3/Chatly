@@ -1,5 +1,3 @@
-
-
 export const sampleChats = [
   {
     avatar: [
@@ -57,12 +55,10 @@ export const smapleUsers = [
   {
     id: 1,
     name: "John Doe",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
   },
   {
     id: 2,
     name: "Jane Smith",
-    avatar: "https://randomuser.me/api/portraits/women/2.jpg",
   },
   {
     id: 3,
@@ -79,20 +75,139 @@ export const smapleUsers = [
 export const smapleNotifications = [
   {
     id: 1,
+    createdAt: "",
     sender: {
       name: "John Doe",
-      avatar: "https://randomuser.me/api/portraits/men/1.jpg",
     },
     time: "2 mins ago",
     chatId: "2",
   },
   {
     id: 2,
+    createdAt: "",
     sender: {
       name: "iA Coder",
       avatar: "https://randomuser.me/api/portraits/men/2.jpg",
     },
     time: "5 mins ago",
     chatId: "2",
+  },
+];
+
+export const sampleMessages = [
+  {
+    id: 1,
+    content: "Hi there! How can I help you today?",
+    createdAt: "",
+    sender: {
+      id: "123",
+      name: "John Doe",
+    },
+    attachments: [
+      {
+        public_id: "1111",
+        url: "https://randomuser.me/api/portraits/men/1.jpg",
+      },
+    ],
+  },
+  {
+    id: 2,
+    content: "Yes, please help me find a job.",
+    createdAt: "",
+    sender: {
+      id: "returnedId",
+      name: "Jane Smith",
+    },
+    attachments: [],
+  },
+  {
+    id: 3,
+    content: "Sure! What kind of job are you looking for?",
+    createdAt: "",
+    sender: {
+      id: "123",
+      name: "John Doe",
+    },
+    attachments: [],
+  },
+  {
+    id: 4,
+    content: "I'm looking for something in software development.",
+    createdAt: "",
+    sender: {
+      id: "returnedId",
+      name: "Jane Smith",
+    },
+    attachments: [],
+  },
+  {
+    id: 5,
+    content: "Great! Do you have any experience in specific technologies?",
+    createdAt: "",
+    sender: {
+      id: "123",
+      name: "John Doe",
+    },
+    attachments: [],
+  },
+  {
+    id: 6,
+    content: "Yes, I have experience in JavaScript, React, and Node.js.",
+    createdAt: "",
+    sender: {
+      id: "returnedId",
+      name: "Jane Smith",
+    },
+    attachments: [
+      {
+        public_id: "2222",
+        url: "https://randomuser.me/api/portraits/women/2.jpg",
+      },
+    ],
+  },
+  {
+    id: 7,
+    content: "Nice! Have you worked on any projects recently?",
+    createdAt: "",
+    sender: {
+      id: "123",
+      name: "John Doe",
+    },
+    attachments: [],
+  },
+  {
+    id: 8,
+    content: "Yes, I built a task management app using MERN stack.",
+    createdAt: "",
+    sender: {
+      id: "returnedId",
+      name: "Jane Smith",
+    },
+    attachments: [],
+  },
+  {
+    id: 9,
+    content: "That's impressive! Can you share the project link?",
+    createdAt: "",
+    sender: {
+      id: "123",
+      name: "John Doe",
+    },
+    attachments: [],
+  },
+  {
+    id: 10,
+    content: "Sure! Here's the link: https://taskmanager.com",
+    createdAt: "",
+    sender: {
+      id: "returnedId",
+      name: "Jane Smith",
+    },
+    attachments: [
+      {
+        public_id: "3333",
+        url: "https://randomuser.me/api/portraits/women/5.jpg",
+      },
+    ],
   },
 ];

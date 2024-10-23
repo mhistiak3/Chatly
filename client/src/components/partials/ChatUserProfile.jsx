@@ -26,6 +26,8 @@ const ChatUserProfile = ({
   open,
   onClose,
 }) => {
+  console.log(allMediaInChat);
+  
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       {/* Dialog Header */}
@@ -95,14 +97,14 @@ const ChatUserProfile = ({
                     borderRadius: "8px",
                   }}
                   component={"a"}
-                  href={media.url}
+                  href={media[0]?.url}
                   target="_blank"
                   rel="noopener"
                 >
                   <CardMedia
                     component="img"
                     height="100"
-                    image={media.url}
+                    image={media[0]?.url}
                     alt={`Media ${index + 1}`}
                     sx={{ objectFit: "cover", borderRadius: "8px" }}
                   />
