@@ -134,7 +134,7 @@ const Header = () => {
 
       {isSearch && (
         <Suspense fallback={<Backdrop open />}>
-          <SearchDialog />
+          <SearchDialog open={isSearch} onClose={openSearch} />
         </Suspense>
       )}
       {isNotifications && (

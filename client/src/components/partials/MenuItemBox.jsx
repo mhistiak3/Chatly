@@ -6,11 +6,10 @@ import {
   Chat as ChatIcon,
 } from "@mui/icons-material";
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-const MenuItemBox = ({ openNewGroup }) => {
+const MenuItemBox = memo(({ openNewGroup }) => {
   const navigate = useNavigate();
-  const [newGroup, setNewGroup] = useState(false);
   const navigateToGroups = () => {
     navigate("/groups");
   };
@@ -123,5 +122,5 @@ const MenuItemBox = ({ openNewGroup }) => {
       </Box>
     </Box>
   );
-};
+})
 export default MenuItemBox;
