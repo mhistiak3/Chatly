@@ -15,7 +15,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-
+import moment from "moment";
 const ProfilePage = () => {
   let name = "Istiak Ahammad";
   let username = "istiakahammad";
@@ -24,7 +24,7 @@ const ProfilePage = () => {
   let avatar =
     "https://avatars.githubusercontent.com/u/65768155?s=400&u=a098e6dfa916a2de76f450576042553f1aa6dfa6&v=4";
 
-  let joinDate = "January 2020";
+  let joinDate = moment("2024-10-23T12:55:43.620Z").format("MMMM Do YYYY");
   let uploadedMedia = [
     "https://cdn.ostad.app/public/upload/2023-11-19T14-54-37.471Z-C%20(8).png",
     "https://cdn.ostad.app/public/upload/2023-11-19T14-54-37.471Z-C%20(8).png",

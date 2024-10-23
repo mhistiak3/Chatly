@@ -47,7 +47,7 @@ export const sampleChats = [
       "https://randomuser.me/api/portraits/women/72.jpg",
     ],
     name: "React Team",
-    id: 4,
+    id: 5,
     groupChat: true,
     members: [1, 3, 4, 5],
   },
