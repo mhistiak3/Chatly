@@ -16,22 +16,23 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { smapleUsers } from "../../constants/smaple.data";
-import { Remove } from "@mui/icons-material";
+
 
 const NewGroup = ({ open, onClose, onCreate }) => {
-let members = smapleUsers
+  let members = smapleUsers
   const [groupName, setGroupName] = useState("");
   const [selectedMembers, setSelectedMembers] = useState([]);
 
-  const handleAddMember = (member) => {
-    if (!selectedMembers.includes(member)) {
-      setSelectedMembers([...selectedMembers, member]);
+  const handleAddMember = (id) => {
+    if (!selectedMembers.includes(id)) {
+      setSelectedMembers([...selectedMembers, id]);
     }
   };
 
-  const handleRemoveMember = (member) => {
-    setSelectedMembers(selectedMembers.filter((m) => m !== member));
+  const handleRemoveMember = (id) => {
+    setSelectedMembers(selectedMembers.filter((m) => m !== id));
   };
 
   const handleCreateGroup = () => {
@@ -88,18 +89,17 @@ let members = smapleUsers
                 <IconButton
                   edge="end"
                   onClick={() =>
-                    selectedMembers.includes(member)
-                      ? handleRemoveMember(member)
-                      : handleAddMember(member)
+                    selectedMembers.includes(member.id)
+                      ? handleRemoveMember(member.id)
+                      : handleAddMember(member.id)
                   }
                   sx={{
-                    background: selectedMembers.includes(member)
+                    background: selectedMembers.includes(member.id)
                       ? "#f44336"
                       : "#74268c",
                   }}
                 >
-                 { selectedMembers.includes(member)? <Remove  />:<AddIcon />   }
-               
+                  {selectedMembers.includes(member.id) ? <RemoveIcon /> : <AddIcon />}
                 </IconButton>
               </ListItem>
               <Divider sx={{ backgroundColor: "#555" }} />
