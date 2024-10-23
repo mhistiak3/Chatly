@@ -68,6 +68,7 @@ export const LayoutLoader = () => {
       <Grid size={{ xs: 12, sm: 4 }} height={"100%"} padding={"0 5px"}>
         {Array.from({ length: 7 }).map((_, index) => (
           <Skeleton
+          key={index}
             variant="rectangular"
             sx={{ height: "100px", marginBottom: "5px" }}
           />
