@@ -98,7 +98,7 @@ export const sampleMessages = [
   {
     id: 1,
     content: "Hi there! How can I help you today?",
-    createdAt: "",
+    createdAt: "2024-10-24T12:30:00Z", // Example ISO date from MongoDB
     sender: {
       id: "123",
       name: "John Doe",
@@ -113,7 +113,7 @@ export const sampleMessages = [
   {
     id: 2,
     content: "Yes, please help me find a job.",
-    createdAt: "",
+    createdAt: "2024-10-24T12:31:00Z", // Example ISO date from MongoDB
     sender: {
       id: "returnedId",
       name: "Jane Smith",
@@ -123,7 +123,7 @@ export const sampleMessages = [
   {
     id: 3,
     content: "Sure! What kind of job are you looking for?",
-    createdAt: "",
+    createdAt: "2024-10-24T12:32:00Z", // Example ISO date from MongoDB
     sender: {
       id: "123",
       name: "John Doe",
@@ -133,7 +133,7 @@ export const sampleMessages = [
   {
     id: 4,
     content: "I'm looking for something in software development.",
-    createdAt: "",
+    createdAt: "2024-10-24T12:33:00Z", // Example ISO date from MongoDB
     sender: {
       id: "returnedId",
       name: "Jane Smith",
@@ -143,7 +143,7 @@ export const sampleMessages = [
   {
     id: 5,
     content: "Great! Do you have any experience in specific technologies?",
-    createdAt: "",
+    createdAt: "2024-10-24T12:34:00Z", // Example ISO date from MongoDB
     sender: {
       id: "123",
       name: "John Doe",
@@ -153,7 +153,7 @@ export const sampleMessages = [
   {
     id: 6,
     content: "Yes, I have experience in JavaScript, React, and Node.js.",
-    createdAt: "",
+    createdAt: "2024-10-24T12:35:00Z", // Example ISO date from MongoDB
     sender: {
       id: "returnedId",
       name: "Jane Smith",
@@ -168,7 +168,7 @@ export const sampleMessages = [
   {
     id: 7,
     content: "Nice! Have you worked on any projects recently?",
-    createdAt: "",
+    createdAt: "2024-10-24T12:36:00Z", // Example ISO date from MongoDB
     sender: {
       id: "123",
       name: "John Doe",
@@ -178,7 +178,7 @@ export const sampleMessages = [
   {
     id: 8,
     content: "Yes, I built a task management app using MERN stack.",
-    createdAt: "",
+    createdAt: "2024-10-24T12:37:00Z", // Example ISO date from MongoDB
     sender: {
       id: "returnedId",
       name: "Jane Smith",
@@ -188,7 +188,7 @@ export const sampleMessages = [
   {
     id: 9,
     content: "That's impressive! Can you share the project link?",
-    createdAt: "",
+    createdAt: "2024-10-24T12:38:00Z", // Example ISO date from MongoDB
     sender: {
       id: "123",
       name: "John Doe",
@@ -198,7 +198,7 @@ export const sampleMessages = [
   {
     id: 10,
     content: "Sure! Here's the link: https://taskmanager.com",
-    createdAt: "",
+    createdAt: "2021-10-24T12:39:00Z", // Example ISO date from MongoDB
     sender: {
       id: "returnedId",
       name: "Jane Smith",

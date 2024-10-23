@@ -1,5 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { memo } from "react";
+import moment from "moment";
+import Attachment from "./Attachment";
 
 export const ChatMessagesList = memo(({ messages, handleMessageOptions }) => {
   return (
@@ -26,19 +28,20 @@ export const ChatMessagesList = memo(({ messages, handleMessageOptions }) => {
           >
             {/* Check if attachments exist and if it's an image */}
             {msg.attachments.length > 0 && msg.attachments[0].url && (
-              <Box
-                component="img"
-                src={msg.attachments[0].url}
-                alt="attachment"
-                sx={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "8px",
-                  marginBottom: "0.5rem",
-                }}
-              />
+              <Attachment url={msg.attachments[0].url} />
             )}
             <Typography>{msg.content}</Typography>
+
+            {/* Display the message creation time */}
+            <Typography
+              variant="caption"
+              sx={{
+                color: msg.sender.id === "123" ? "#ddd" : "#888",
+                marginTop: "0.5rem",
+              }}
+            >
+              {moment(msg.createdAt).fromNow()} ago
+            </Typography>
           </Box>
         ))}
       </Stack>
