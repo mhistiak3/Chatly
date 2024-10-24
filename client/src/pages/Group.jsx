@@ -1,75 +1,31 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  List,
-  ListItem,
-  Typography,
-  IconButton,
-  
-} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { Box, List, ListItem, Typography, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import AvatarCard from "../components/partials/AvatarCard";
-import { SelectedGroup } from "../components";
+import { SelectedGroupComponent } from "../components";
+import { sampleChats } from "../constants/smaple.data";
+import { useSearchParams } from "react-router-dom";
+import AddGroupMemberDialog from "../components/partials/AddGroupMemberDialog";
 
 const Group = () => {
-  const [groups, setGroups] = useState([
-    {
-      id: 1,
-      name: "Developers",
-      members: [
-        {
-          id: 1,
-          name: "John",
-          avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-        },
-        {
-          id: 2,
-          name: "Jane",
-          avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-        },
-        {
-          id: 3,
-          name: "Mark",
-          avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-        },
-       
-        
-      ],
-    },
-    {
-      id: 2,
-      name: "Designers",
-      members: [
-        {
-          id: 4,
-          name: "Lucy",
-          avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-        },
-      ],
-    },
-  ]);
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [groupName, setGroupName] = useState("");
+  const [groups, setGroups] = useState(
+    sampleChats.filter((chat) => chat.groupChat)
+  );
+  const [addMemberDialogToggle, setAddMemberDialogToggle] = useState(false);
+  const [searchParams] = useSearchParams();
+  const groupId = searchParams.get("groupId");
+  const [selectedGroup, setSelectedGroup] = useState(false);
+
   const navigate = useNavigate();
-  const handleGroupSelect = (group) => {
-    setSelectedGroup(group);
-    setGroupName(group.name);
-    setIsEditing(false);
+  const handleGroupSelect = (e, group) => {
+    if (groupId == group.id) {
+      e.preventDefault();
+    }
+    setSelectedGroup(true);
   };
 
-
-
-  const handleEditGroupName = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveGroupName = () => {
-    // Logic for saving the updated group name
-    setIsEditing(false);
-  };
   const backToChat = () => {
     navigate("/");
   };
@@ -105,16 +61,18 @@ const Group = () => {
           <List>
             {groups.map((group) => (
               <ListItem
+                component={Link}
+                to={`?groupId=${group?.groupId}`}
                 key={group.id}
                 sx={{
                   color: selectedGroup?.id === group.id ? "#74268c" : "#fff",
                   cursor: "pointer",
                   "&:hover": { backgroundColor: "#3b3b3b" },
                 }}
-                onClick={() => handleGroupSelect(group)}
+                onClick={(e) => handleGroupSelect(e, group)}
               >
                 <AvatarCard
-                  avatar={group.members.map((member) => member.avatar)}
+                  avatar={group.avatar}
                   groupChat={true}
                   name={group.name}
                 />
@@ -143,14 +101,11 @@ const Group = () => {
         }}
       >
         {selectedGroup ? (
-          <SelectedGroup
+          <SelectedGroupComponent
             selectedGroup={selectedGroup}
-            groupName={groupName}
-            setGroupName={setGroupName}
-            isEditing={isEditing}
-            handleEditGroupName={handleEditGroupName}
-            handleSaveGroupName={handleSaveGroupName}
             setSelectedGroup={setSelectedGroup}
+            groupId={groupId}
+            setAddMemberDialogToggle={setAddMemberDialogToggle}
           />
         ) : (
           <Typography variant="h6" color="gray">
@@ -158,6 +113,12 @@ const Group = () => {
           </Typography>
         )}
       </Box>
+      {addMemberDialogToggle && (
+        <AddGroupMemberDialog
+          open={addMemberDialogToggle}
+          onClose={() => setAddMemberDialogToggle(false)}
+        />
+      )}
     </Box>
   );
 };

@@ -34,6 +34,7 @@ export const sampleChats = [
     name: "Project Team",
     id: 4,
     groupChat: true,
+    groupId: 1,
     members: [1, 3, 4, 5],
     lastMessage: "Let's finalize the report today.",
   },
@@ -47,6 +48,7 @@ export const sampleChats = [
     name: "React Team",
     id: 5,
     groupChat: true,
+    groupId: 2,
     members: [1, 3, 4, 5],
   },
 ];
@@ -217,6 +219,42 @@ export const sampleMessages = [
       {
         public_id: "3333",
         url: "https://videos.pexels.com/video-files/6548176/6548176-hd_1920_1080_24fps.mp4",
+      },
+    ],
+  },
+];
+
+
+export const sampleGroup = [
+  {
+    id: 1,
+    name: "Developers",
+    members: [
+      {
+        id: 1,
+        name: "John",
+        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+      },
+      {
+        id: 2,
+        name: "Jane",
+        avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+      },
+      {
+        id: 3,
+        name: "Mark",
+        avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Designers",
+    members: [
+      {
+        id: 4,
+        name: "Lucy",
+        avatar: "https://randomuser.me/api/portraits/women/6.jpg",
       },
     ],
   },
