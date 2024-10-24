@@ -16,7 +16,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import { sampleGroup } from "../../constants/smaple.data";
 export const SelectedGroupComponent = memo(
-  ({ selectedGroup, setSelectedGroup, groupId, setAddMemberDialogToggle }) => {
+  ({
+    selectedGroup,
+    setSelectedGroup,
+    groupId,
+    setAddMemberDialogToggle,
+    setDeleteDialogToggle,
+  }) => {
     const [isEditing, setIsEditing] = useState(false);
 
     const group = sampleGroup.find((group) => group.id == groupId);
@@ -40,7 +46,7 @@ export const SelectedGroupComponent = memo(
     };
 
     const handleDeleteGroup = (groupId) => {
-      // Logic for deleting the group
+      setDeleteDialogToggle(true);
     };
     return (
       <Box

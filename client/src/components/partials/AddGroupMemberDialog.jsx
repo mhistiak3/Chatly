@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const AddGroupMemberDialog = ({ open, onClose,  }) => {
+const AddGroupMemberDialog = memo(({ open, onClose,  }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedMembers, setSelectedMembers] = useState([]);
 
@@ -91,6 +91,6 @@ const AddGroupMemberDialog = ({ open, onClose,  }) => {
       </DialogActions>
     </Dialog>
   );
-};
+})
 
 export default AddGroupMemberDialog;
