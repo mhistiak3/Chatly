@@ -1,14 +1,23 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, List, ListItem, Typography, IconButton } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  Typography,
+  IconButton,
+  Backdrop,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import AvatarCard from "../components/partials/AvatarCard";
 import { SelectedGroupComponent } from "../components";
 import { sampleChats } from "../constants/smaple.data";
 import { useSearchParams } from "react-router-dom";
-const AddGroupMemberDialog = lazy(() => import("../components/partials/AddGroupMemberDialog")); 
-const DeleteDialog = lazy(() => import("../components/partials/DeleteDialog")); 
+const AddGroupMemberDialog = lazy(() =>
+  import("../components/partials/AddGroupMemberDialog")
+);
+const DeleteDialog = lazy(() => import("../components/partials/DeleteDialog"));
 
 const Group = () => {
   const [groups, setGroups] = useState(
@@ -117,16 +126,20 @@ const Group = () => {
         )}
       </Box>
       {addMemberDialogToggle && (
-        <AddGroupMemberDialog
-          open={addMemberDialogToggle}
-          onClose={() => setAddMemberDialogToggle(false)}
-        />
+        <Suspense fallback={<Backdrop open />}>
+          <AddGroupMemberDialog
+            open={addMemberDialogToggle}
+            onClose={() => setAddMemberDialogToggle(false)}
+          />
+        </Suspense>
       )}
       {deleteDialogToggle && (
-        <DeleteDialog
-          open={deleteDialogToggle}
-          onClose={() => setDeleteDialogToggle(false)}
-        />
+        <Suspense fallback={<Backdrop open />}>
+          <DeleteDialog
+            open={deleteDialogToggle}
+            onClose={() => setDeleteDialogToggle(false)}
+          />
+        </Suspense>
       )}
     </Box>
   );

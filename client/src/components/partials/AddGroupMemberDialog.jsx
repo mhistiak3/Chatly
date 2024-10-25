@@ -7,28 +7,36 @@ import {
   TextField,
   Button,
   Box,
-  Chip,
-  Typography,
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  IconButton,
 } from "@mui/material";
+import { smapleUsers } from "../../constants/smaple.data";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const AddGroupMemberDialog = memo(({ open, onClose,  }) => {
+  let members = smapleUsers;
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedMembers, setSelectedMembers] = useState([]);
-
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-  };
 
-  const handleAddMember = () => {
-    if (searchTerm) {
-      setSelectedMembers([...selectedMembers, searchTerm]);
-      setSearchTerm(""); // Clear the input
-    }
   };
+ const handleAddMember = (id) => {
+   if (!selectedMembers.includes(id)) {
+     setSelectedMembers([...selectedMembers, id]);
+   }
+ };
 
-  const handleRemoveMember = (member) => {
-    setSelectedMembers(selectedMembers.filter((m) => m !== member));
-  };
+ const handleRemoveMember = (id) => {
+   setSelectedMembers(selectedMembers.filter((m) => m !== id));
+ };
+
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -42,35 +50,51 @@ const AddGroupMemberDialog = memo(({ open, onClose,  }) => {
             onChange={handleSearchChange}
             fullWidth
           />
-          <Button
-            variant="contained"
-            onClick={handleAddMember}
-            disabled={!searchTerm}
-          >
-            Add
-          </Button>
-          {selectedMembers.length > 0 && (
-            <Box sx={{ marginTop: "1rem" }}>
-              <Typography variant="subtitle1">Selected Members:</Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "0.5rem",
-                  marginTop: "0.5rem",
-                }}
-              >
-                {selectedMembers.map((member, index) => (
-                  <Chip
-                    key={index}
-                    label={member}
-                    onDelete={() => handleRemoveMember(member)}
-                    color="primary"
-                  />
-                ))}
-              </Box>
-            </Box>
-          )}
+
+          <List sx={{ maxHeight: "200px", overflowY: "auto" }}>
+            {members.map((member) => (
+              <React.Fragment key={member.id}>
+                <ListItem
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    backgroundColor: "#3b3b3b",
+                    borderRadius: "8px",
+                    marginBottom: "0.5rem",
+                    "&:hover": {
+                      backgroundColor: "#444",
+                    },
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar src={member.avatar} alt={member.name} />
+                  </ListItemAvatar>
+                  <ListItemText primary={member.name} sx={{ color: "#fff" }} />
+                  <IconButton
+                    edge="end"
+                    onClick={() =>
+                      selectedMembers.includes(member.id)
+                        ? handleRemoveMember(member.id)
+                        : handleAddMember(member.id)
+                    }
+                    sx={{
+                      background: selectedMembers.includes(member.id)
+                        ? "#f44336"
+                        : "#74268c",
+                    }}
+                  >
+                    {selectedMembers.includes(member.id) ? (
+                      <RemoveIcon />
+                    ) : (
+                      <AddIcon />
+                    )}
+                  </IconButton>
+                </ListItem>
+                <Divider sx={{ backgroundColor: "#555" }} />
+              </React.Fragment>
+            ))}
+          </List>
+
         </Box>
       </DialogContent>
       <DialogActions>
