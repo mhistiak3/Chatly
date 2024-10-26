@@ -16,6 +16,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import moment from "moment";
+import { primaryColor } from "../constants/colors";
 const ProfilePage = () => {
   let name = "Istiak Ahammad";
   let username = "istiakahammad";
@@ -74,7 +75,7 @@ const ProfilePage = () => {
       <IconButton
         onClick={() => navigate(-1)}
         sx={{
-          color: "#74268c",
+          color: primaryColor,
           marginBottom: "1.5rem",
           alignSelf: "flex-start",
         }}
@@ -121,16 +122,16 @@ const ProfilePage = () => {
             fullWidth
             sx={{
               maxWidth: "400px",
-              borderColor: "#74268c", // Custom border color
+              borderColor: primaryColor, // Custom border color
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#74268c", // Border color when not focused
+                  borderColor: primaryColor, // Border color when not focused
                 },
                 "&:hover fieldset": {
-                  borderColor: "#74268c", // Border color on hover
+                  borderColor: primaryColor, // Border color on hover
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "#74268c", // Border color when focused
+                  borderColor: primaryColor, // Border color when focused
                 },
               },
               "& .MuiInputBase-input": {
@@ -161,16 +162,16 @@ const ProfilePage = () => {
             fullWidth
             sx={{
               marginBottom: "1rem",
-              borderColor: "#74268c", // Custom border color
+              borderColor: primaryColor, // Custom border color
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#74268c", // Border color when not focused
+                  borderColor: primaryColor, // Border color when not focused
                 },
                 "&:hover fieldset": {
-                  borderColor: "#74268c", // Border color on hover
+                  borderColor: primaryColor, // Border color on hover
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "#74268c", // Border color when focused
+                  borderColor: primaryColor, // Border color when focused
                 },
               },
               "& .MuiInputBase-input": {
@@ -196,7 +197,7 @@ const ProfilePage = () => {
         spacing={3}
         sx={{ marginTop: "1.5rem" }}
       >
-        <Box display="flex" alignItems="center" sx={{ color: "#74268c" }}>
+        <Box display="flex" alignItems="center" sx={{ color: primaryColor }}>
           <PhotoLibraryIcon sx={{ marginRight: "0.5rem" }} />
           <Typography
             variant="body2"
@@ -206,7 +207,7 @@ const ProfilePage = () => {
           </Typography>
         </Box>
 
-        <Box display="flex" alignItems="center" sx={{ color: "#74268c" }}>
+        <Box display="flex" alignItems="center" sx={{ color: primaryColor }}>
           <CalendarTodayIcon sx={{ marginRight: "0.5rem" }} />
           <Typography
             variant="body2"
@@ -263,7 +264,7 @@ const ProfilePage = () => {
         onClick={isEditing ? handleSaveProfile : () => setIsEditing(true)}
         sx={{
           marginTop: "2rem",
-          backgroundColor: "#74268c",
+          backgroundColor: primaryColor,
           "&:hover": {
             backgroundColor: "#5a1e6e",
           },

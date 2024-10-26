@@ -2,6 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import { memo } from "react";
 import moment from "moment";
 import Attachment from "./Attachment";
+import { primaryColor } from "../../constants/colors";
 
 export const ChatMessagesList = memo(({ messages, handleMessageOptions }) => {
   return (
@@ -18,7 +19,7 @@ export const ChatMessagesList = memo(({ messages, handleMessageOptions }) => {
           <Box
             key={msg.id}
             sx={{
-              background: msg.sender.id === "123" ? "#74268c" : "#121212",
+              background: msg.sender.id === "123" ? primaryColor : "#121212",
               borderRadius: "10px",
               padding: "0.5rem",
               alignSelf: msg.sender.id === "123" ? "flex-end" : "flex-start",

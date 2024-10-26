@@ -14,6 +14,8 @@ import AvatarCard from "../components/partials/AvatarCard";
 import { SelectedGroupComponent } from "../components";
 import { sampleChats } from "../constants/smaple.data";
 import { useSearchParams } from "react-router-dom";
+import { primaryColor } from "../constants/colors";
+
 const AddGroupMemberDialog = lazy(() =>
   import("../components/partials/AddGroupMemberDialog")
 );
@@ -31,7 +33,9 @@ const Group = () => {
 
   const navigate = useNavigate();
   const handleGroupSelect = (e, group) => {
+
     if (groupId == group.id) {
+      
       e.preventDefault();
     }
     setSelectedGroup(true);
@@ -40,6 +44,8 @@ const Group = () => {
   const backToChat = () => {
     navigate("/");
   };
+
+  
   return (
     <Box
       sx={{
@@ -76,9 +82,11 @@ const Group = () => {
                 to={`?groupId=${group?.groupId}`}
                 key={group.id}
                 sx={{
-                  color: selectedGroup?.id === group.id ? "#74268c" : "#fff",
+                  backgroundColor: group.groupId == groupId ? "#3b3b3b" : "",
+                  ":hover": {
+                    backgroundColor: "#3b3b3b",
+                  },
                   cursor: "pointer",
-                  "&:hover": { backgroundColor: "#3b3b3b" },
                 }}
                 onClick={(e) => handleGroupSelect(e, group)}
               >

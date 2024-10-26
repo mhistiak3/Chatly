@@ -18,6 +18,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { smapleUsers } from "../../constants/smaple.data";
+import { primaryColor } from "../../constants/colors";
 
 
 const NewGroup = ({ open, onClose, onCreate }) => {
@@ -96,7 +97,7 @@ const NewGroup = ({ open, onClose, onCreate }) => {
                   sx={{
                     background: selectedMembers.includes(member.id)
                       ? "#f44336"
-                      : "#74268c",
+                      : primaryColor,
                   }}
                 >
                   {selectedMembers.includes(member.id) ? <RemoveIcon /> : <AddIcon />}

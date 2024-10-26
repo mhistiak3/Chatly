@@ -9,6 +9,7 @@ import {
   AudioFile,
   FileCopy,
 } from "@mui/icons-material";
+import { primaryColor } from "../../constants/colors";
 export const SendMessageBox = memo(
   ({
     handleUploadClick,
@@ -30,7 +31,7 @@ export const SendMessageBox = memo(
         >
           <IconButton
             onClick={() => setShowUploadOptions(!showUploadOptions)}
-            sx={{ color: "#74268c" }}
+            sx={{ color: primaryColor }}
           >
             <AttachFileIcon />
           </IconButton>
@@ -53,7 +54,7 @@ export const SendMessageBox = memo(
                 {/* Image Upload */}
                 <Grid size={12}>
                   <IconButton
-                    sx={{ color: "#74268c" }}
+                    sx={{ color: primaryColor }}
                     onClick={() => handleUploadClick("image")}
                   >
                     <PhotoCamera />
@@ -69,7 +70,7 @@ export const SendMessageBox = memo(
                 {/* Video Upload */}
                 <Grid size={12}>
                   <IconButton
-                    sx={{ color: "#74268c" }}
+                    sx={{ color: primaryColor }}
                     onClick={() => handleUploadClick("video")}
                   >
                     <VideoCamera />
@@ -85,7 +86,7 @@ export const SendMessageBox = memo(
                 {/* Audio Upload */}
                 <Grid size={12}>
                   <IconButton
-                    sx={{ color: "#74268c" }}
+                    sx={{ color: primaryColor }}
                     onClick={() => handleUploadClick("audio")}
                   >
                     <AudioFile />
@@ -101,7 +102,7 @@ export const SendMessageBox = memo(
                 {/* File Upload */}
                 <Grid size={12}>
                   <IconButton
-                    sx={{ color: "#74268c" }}
+                    sx={{ color: primaryColor }}
                     onClick={() => handleUploadClick("file")}
                   >
                     <FileCopy />
@@ -134,7 +135,7 @@ export const SendMessageBox = memo(
               },
             }}
           />
-          <IconButton onClick={handleSendMessage} sx={{ color: "#74268c" }}>
+          <IconButton onClick={handleSendMessage} sx={{ color: primaryColor }}>
             <SendIcon />
           </IconButton>
         </Box>

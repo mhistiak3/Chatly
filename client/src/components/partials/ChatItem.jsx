@@ -2,6 +2,7 @@ import { Box, Stack, Typography, Avatar, Badge } from "@mui/material";
 import { Link } from "..";
 import { memo } from "react";
 import AvatarCard from "./AvatarCard";
+import { primaryColor } from "../../constants/colors";
 
 const ChatItem = ({
   avatar = [],
@@ -53,7 +54,7 @@ const ChatItem = ({
             </Typography>
             <Typography
               variant="body2"
-              color={newMessage?.count > 0 ? "#74268c" : "#aaa"}
+              color={newMessage?.count > 0 ? primaryColor : "#aaa"}
               sx={{
                 fontWeight: newMessage?.count > 0 ? "bold" : "normal",
                 fontSize: "0.85rem",

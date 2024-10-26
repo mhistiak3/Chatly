@@ -1,5 +1,6 @@
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { primaryColor } from "../../constants/colors";
 const SearchUserItem = ({ user, handleAddFriend, isLoading }) => {
   return (
     <ListItem
@@ -18,7 +19,7 @@ const SearchUserItem = ({ user, handleAddFriend, isLoading }) => {
           edge="end"
           aria-label="add"
           onClick={handleAddFriend}
-          sx={{ color: "#fff", bgcolor: "#74268c" }}
+          sx={{ color: "#fff", bgcolor: primaryColor }}
         >
           <AddIcon />
         </IconButton>

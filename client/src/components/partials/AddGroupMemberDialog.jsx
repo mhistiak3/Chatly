@@ -18,6 +18,7 @@ import {
 import { smapleUsers } from "../../constants/smaple.data";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { primaryColor } from "../../constants/colors";
 
 const AddGroupMemberDialog = memo(({ open, onClose,  }) => {
   let members = smapleUsers;
@@ -83,7 +84,7 @@ const AddGroupMemberDialog = memo(({ open, onClose,  }) => {
                     sx={{
                       background: selectedMembers.includes(member)
                         ? "#f44336"
-                        : "#74268c",
+                        : primaryColor,
                     }}
                   >
                     {selectedMembers.includes(member) ? (
