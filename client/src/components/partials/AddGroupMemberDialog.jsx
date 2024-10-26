@@ -28,13 +28,16 @@ const AddGroupMemberDialog = memo(({ open, onClose,  }) => {
 
   };
  const handleAddMember = (id) => {
-   if (!selectedMembers.includes(id)) {
-     setSelectedMembers([...selectedMembers, id]);
+  const MemberSelect = members.find((member) => member.id === id);
+   if (!selectedMembers.includes(MemberSelect)) {
+     setSelectedMembers([...selectedMembers, MemberSelect]);
    }
+  
+   
  };
 
  const handleRemoveMember = (id) => {
-   setSelectedMembers(selectedMembers.filter((m) => m !== id));
+   setSelectedMembers(selectedMembers.filter((m) => m.id !== id));
  };
 
 
@@ -73,17 +76,17 @@ const AddGroupMemberDialog = memo(({ open, onClose,  }) => {
                   <IconButton
                     edge="end"
                     onClick={() =>
-                      selectedMembers.includes(member.id)
+                      selectedMembers.includes(member)
                         ? handleRemoveMember(member.id)
                         : handleAddMember(member.id)
                     }
                     sx={{
-                      background: selectedMembers.includes(member.id)
+                      background: selectedMembers.includes(member)
                         ? "#f44336"
                         : "#74268c",
                     }}
                   >
-                    {selectedMembers.includes(member.id) ? (
+                    {selectedMembers.includes(member) ? (
                       <RemoveIcon />
                     ) : (
                       <AddIcon />
