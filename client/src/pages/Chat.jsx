@@ -1,7 +1,16 @@
 import React, { lazy, Suspense, useState } from "react";
 import { AppLayout, ChatMessagesList, SendMessageBox } from "../components";
-import { Box, Avatar, Typography, Divider, Backdrop } from "@mui/material";
+import {
+  Box,
+  Avatar,
+  Typography,
+  Divider,
+  Backdrop,
+  IconButton,
+} from "@mui/material";
 import { sampleMessages } from "../constants/smaple.data";
+import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const ChatUserProfile = lazy(() =>
   import("../components/partials/ChatUserProfile")
@@ -15,7 +24,7 @@ const Chat = () => {
   const messagesAttachment = messages
     .filter((message) => message.attachments.length > 0)
     .map(({ attachments }) => attachments);
- 
+  const navigate = useNavigate();
 
   // Dummy user data
   const chatUser = {
@@ -58,7 +67,8 @@ const Chat = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
+  
+        height: "calc(100vh - 3.7rem)",
         position: "relative",
         backgroundColor: "#121212",
         color: "#fff",
@@ -83,19 +93,29 @@ const Chat = () => {
 
       <Box
         sx={{
-          padding: "1rem",
+          padding: { xs: "0.5rem", sm: "1rem" },
           display: "flex",
           alignItems: "center",
           backgroundColor: "#1f1f1f",
         }}
       >
+        <IconButton
+          sx={{
+            color: "#fff",
+            marginRight: "1rem",
+            display: { xs: "block", sm: "none" },
+          }}
+          onClick={() => navigate("/")}
+        >
+          <ArrowBackIcon />
+        </IconButton>
         <Avatar
           src={chatUser.image}
           alt={chatUser.name}
           sx={{ width: 50, height: 50, marginRight: "1rem" }}
         />
         <Box sx={{ cursor: "pointer" }} onClick={openChatUserProfile}>
-          <Typography variant="h6">{chatUser.name}</Typography>
+          <Typography variant="h6" >{chatUser.name}</Typography>
           <Typography variant="body2" color="gray">
             {chatUser.status}
           </Typography>

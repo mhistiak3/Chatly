@@ -43,6 +43,8 @@ const Header = () => {
      setNewGroup((prev) => !prev);
    };
   const toggleDrawer = () => {
+
+    
     setOpenMenu((prev) => !prev);
   };
   return (
@@ -78,11 +80,7 @@ const Header = () => {
               fontWeight: "bold",
             }}
           >
-            <IconButton
-              sx={{ mr: 1, display: { sm: "none" }, fontWeight: "bold" }}
-            >
-              <MenuIcon />
-            </IconButton>
+         
             <Box
               component="img"
               src="/logo.png"

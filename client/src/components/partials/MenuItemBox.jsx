@@ -30,7 +30,7 @@ const MenuItemBox = memo(({ openNewGroup }) => {
         display: "flex",
         flexDirection: "column",
         borderRadius: "4px",
-        zIndex: 10,
+        zIndex: 2000,
       }}
     >
       <Box

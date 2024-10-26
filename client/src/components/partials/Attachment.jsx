@@ -18,7 +18,7 @@ const Attachment = ({ url }) => {
   const fileType = getFileType(url);
 
   return (
-    <Box component={"a"} href={url} target="_blank" rel="noopener noreferrer">
+    <Box >
       {fileType === "image" && (
         <Box
           component="img"

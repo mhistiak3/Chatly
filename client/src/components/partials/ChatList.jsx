@@ -18,6 +18,7 @@ export const ChatList = ({
       overflow={"auto"}
       sx={{
         padding: "0.5rem",
+        marginTop: { xs: "1rem", sm: "0" },
         backgroundColor: "#1e1e1e",
         "&::-webkit-scrollbar": {
           width: "8px",
@@ -34,6 +35,7 @@ export const ChatList = ({
         placeholder="Search chats..."
         sx={{
           marginBottom: "1rem",
+          marginTop: "1rem",
           input: {
             color: "#fff",
           },
@@ -51,9 +53,11 @@ export const ChatList = ({
         }}
       />
 
-      {chats?.map((chat,index) => {
+      {chats?.map((chat, index) => {
         const { id, groupChat, members, avatar, name, lastMessage } = chat;
-        const newMessage = newMessagesAlert.find((alert) => alert.chatId === id);
+        const newMessage = newMessagesAlert.find(
+          (alert) => alert.chatId === id
+        );
         const isOnline = members.some((member) => onlineUsers.includes(member));
         return (
           <ChatItem

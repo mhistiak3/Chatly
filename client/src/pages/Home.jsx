@@ -8,12 +8,14 @@ const Home = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
-        padding: "2rem",
+    
+        height: "calc(100vh - 3.5rem)",
+        padding: " 5rem 2rem",
         backgroundColor: "#2c2c2c",
         color: "#fff",
         borderRadius: "10px", // Slightly more rounded corners
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+        display: { xs: "none", sm: "block" },
       }}
     >
       <Box sx={{ marginBottom: "2rem", textAlign: "center" }}>
@@ -40,7 +42,7 @@ const Home = () => {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
-          padding: "2rem", // Increased padding for the empty state box
+          padding: "5rem 2rem", // Increased padding for the empty state box
           backgroundColor: "#3b3b3b",
           borderRadius: "10px",
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
@@ -56,7 +58,6 @@ const Home = () => {
         <Typography variant="body1" sx={{ marginTop: "1rem", color: "#ccc" }}>
           No chats available. Start a new conversation!
         </Typography>
-       
       </Box>
     </Box>
   );

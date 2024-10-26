@@ -31,7 +31,7 @@ const ChatItem = ({
           justifyContent: "space-between",
           borderBottom: "1px solid #333",
           padding: "1rem",
-          backgroundColor: sameSender ? "#1f1f2f" : "#121212",
+          backgroundColor: sameSender ? "#333" : "#121212",
           transition: "background-color 0.3s ease",
           "&:hover": {
             backgroundColor: "#333",
@@ -39,8 +39,12 @@ const ChatItem = ({
         }}
       >
         <Stack direction="row" alignItems="center" spacing={2}>
-          
-         <AvatarCard avatar={avatar} groupChat={groupChat} isOnline={isOnline} name={name}/>
+          <AvatarCard
+            avatar={avatar}
+            groupChat={groupChat}
+            isOnline={isOnline}
+            name={name}
+          />
 
           <Stack>
             <Typography

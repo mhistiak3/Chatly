@@ -17,11 +17,16 @@ const handleDeleteChat = (e,id,group) => {
       <>
         <Title />
         <Header />
-        <Grid container height={"calc(100vh - 3.7rem)"}>
+        <Grid
+          container
+          height={"calc(100vh - 3.5rem)"}
+          sx={{ position: "relative" }}
+        >
           <Grid
             size={{ xs: 12, sm: 4 }}
             height={"100%"}
             bgcolor={"background.paper"}
+          
           >
             <ChatList
               chats={sampleChats}
@@ -40,7 +45,14 @@ const handleDeleteChat = (e,id,group) => {
           <Grid
             size={{ xs: 12, sm: 8 }}
             bgcolor={"background.default"}
-            height={"100%"}
+            // height={"100%"}
+            sx={{
+              position: { xs: "absolute", sm: "relative" },
+              padding: { xs: "10px 0 ", sm: "0" },
+              top: 0,
+              left: 0,
+              zIndex: 1000,
+            }}
           >
             <WrappedComponent {...props} />
           </Grid>
