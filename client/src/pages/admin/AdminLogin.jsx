@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const isAdmin = false;
+const isAdmin = true;
 const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);

@@ -8,10 +8,9 @@ export const AppLayout = () => (WrappedComponent) => {
   return (props) => {
     const params = useParams();
     const chatId = params?.chatId;
-const handleDeleteChat = (e,id,group) => {
-  console.log(id);
-  
-}
+    const handleDeleteChat = (e, id, group) => {
+      console.log(id);
+    };
 
     return (
       <>
@@ -26,7 +25,6 @@ const handleDeleteChat = (e,id,group) => {
             size={{ xs: 12, sm: 4 }}
             height={"100%"}
             bgcolor={"background.paper"}
-          
           >
             <ChatList
               chats={sampleChats}

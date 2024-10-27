@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 import MenuItemBox from "../partials/MenuItemBox";
 import { lazy, Suspense, useState } from "react";
+import Logo from "../shared/Logo";
 
 const SearchDialog = lazy(() => import("../partials/Search"));
 const NotificationsDialog = lazy(() => import("../partials/Notifications"));
@@ -25,26 +26,21 @@ const Header = () => {
   const [mobile, setMobile] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const [isNotifications, setIsNotifications] = useState(false);
-   const [newGroup, setNewGroup] = useState(false);
-   
+  const [newGroup, setNewGroup] = useState(false);
 
   const handleMobile = () => {
     setMobile((prev) => !prev);
   };
   const openSearch = () => {
     setIsSearch((prev) => !prev);
-   
-    
   };
   const openNotifications = () => {
     setIsNotifications((prev) => !prev);
   };
-   const openNewGroup = () => {
-     setNewGroup((prev) => !prev);
-   };
+  const openNewGroup = () => {
+    setNewGroup((prev) => !prev);
+  };
   const toggleDrawer = () => {
-
-    
     setOpenMenu((prev) => !prev);
   };
   return (
@@ -72,30 +68,7 @@ const Header = () => {
             alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-          >
-         
-            <Box
-              component="img"
-              src="/logo.png"
-              sx={{ width: { xs: "1.8rem", sm: "2.5rem" }, mr: 0.6 }}
-            />
-            <Typography
-              variant="h5"
-              sx={{
-                fontWeight: "bold",
-                fontSize: { xs: "1rem", sm: "1.5rem" },
-              }}
-            >
-              Chatly
-            </Typography>
-          </Box>
+          <Logo />
           <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <IconButton onClick={() => openSearch()}>
               <SearchIcon />
@@ -136,7 +109,10 @@ const Header = () => {
       )}
       {isNotifications && (
         <Suspense fallback={<Backdrop open />}>
-          <NotificationsDialog open={isNotifications} onClose={openNotifications} />
+          <NotificationsDialog
+            open={isNotifications}
+            onClose={openNotifications}
+          />
         </Suspense>
       )}
       {newGroup && (
