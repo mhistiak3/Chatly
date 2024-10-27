@@ -7,15 +7,16 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { ThemeProvider } from "@mui/material";
 import darkTheme from "./utils/DarkTheme.js";
-
+import { Toaster } from "react-hot-toast";
+import { LayoutLoader, LayoutLoading, ProtectedRoute } from "./components";
 const Home = lazy(() => import("./pages/Home.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Chat = lazy(() => import("./pages/Chat.jsx"));
 const Group = lazy(() => import("./pages/Group.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
-import { Toaster } from "react-hot-toast";
-import { LayoutLoader, ProtectedRoute } from "./components";
-import Profile from "./pages/Profile.jsx";
+const Profile = lazy(() => import("./pages/Profile.jsx"));
+const AdminLogin = lazy(() => import("./pages/admin/AdminLogin.jsx"));
+
 const App = () => {
   const user = true;
   return (
@@ -59,6 +60,18 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+          {/* Admin */}
+
+          <Route
+            path="/admin/login"
+            element={
+              <Suspense fallback={<LayoutLoading />}>
+                <AdminLogin />
+              </Suspense>
+            }
+          />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

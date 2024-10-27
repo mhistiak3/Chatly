@@ -10,8 +10,10 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <HelmetProvider>
       <CssBaseline />
+
       <Suspense fallback={<LayoutLoader />}>
-        <Box onContextMenu={(e) => e.preventDefault()}>
+        {/* onContextMenu={(e) => e.preventDefault()} */}
+        <Box>
           <App />
         </Box>
       </Suspense>
