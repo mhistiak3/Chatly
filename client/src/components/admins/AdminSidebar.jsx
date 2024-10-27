@@ -75,6 +75,7 @@ const AdminSidebar = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
+            zIndex: 1000,
           }}
         >
           {/* Logo Section */}

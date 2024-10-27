@@ -3,7 +3,12 @@ import { AdminLayout } from "../../components";
 import DashboardTopBar from "../../components/admins/DashboardTopBar";
 
 import DashboardState from "../../components/admins/DashboardState";
-
+import {
+  DoughnutChart,
+  LineChart,
+} from "../../components/admins/DashboardChart";
+import GroupIcon from "@mui/icons-material/Group";
+import PersonIcon from "@mui/icons-material/Person";
 const Dashboard = () => {
   return (
     <AdminLayout>
@@ -29,7 +34,7 @@ const Dashboard = () => {
               <Typography sx={{ fontWeight: "bold", fontSize: "1.5rem" }}>
                 Last Messages
               </Typography>
-              <h2>Message</h2>
+              <LineChart />
             </Paper>
             {/* 2 */}
             <Paper
@@ -37,7 +42,7 @@ const Dashboard = () => {
                 padding: "2rem",
                 borderRadius: "0.5rem",
                 display: "flex",
-                width: { xs: "100%", md: "40%" },
+                width: { xs: "100%", lg: "40%" },
                 flexDirection: "column",
                 gap: "1rem",
               }}
@@ -45,11 +50,28 @@ const Dashboard = () => {
               <Typography sx={{ fontWeight: "bold", fontSize: "1.5rem" }}>
                 Last Messages
               </Typography>
-              <h2>Message</h2>
+              <Box sx={{ position: "relative",display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <DoughnutChart value={[10, 20]} />
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "55%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <GroupIcon /> vs <PersonIcon />
+                </Box>
+              </Box>
             </Paper>
           </Stack>
 
-       <DashboardState/>
+          <DashboardState />
         </Box>
       </Container>
     </AdminLayout>
