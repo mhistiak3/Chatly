@@ -1,6 +1,6 @@
 import { Box, Button, IconButton } from "@mui/material";
 import Logo from "../shared/Logo";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   Dashboard,
   Group,
@@ -13,12 +13,24 @@ import {
 import { useEffect, useState } from "react";
 
 const AdminSidebar = () => {
+    const adminMenu = [
+      {
+        to: "/admin/dashboard",
+        icon: <Dashboard />,
+        label: "Dashboard",
+      },
+      { to: "/admin/users", icon: <Person />, label: "Users" },
+      { to: "/admin/groups", icon: <Group />, label: "Groups" },
+      { to: "/admin/messages", icon: <Message />, label: "Messages" },
+    ];
   const [open, setOpen] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 600);
 
+  
+
   useEffect(() => {
     const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 600); 
+      setIsLargeScreen(window.innerWidth >= 600);
     };
     window.addEventListener("resize", handleResize);
     return () => {
@@ -87,17 +99,9 @@ const AdminSidebar = () => {
               gap: "1rem",
             }}
           >
-            {[
-              {
-                to: "/admin/dashboard",
-                icon: <Dashboard />,
-                label: "Dashboard",
-              },
-              { to: "/admin/user", icon: <Person />, label: "Users" },
-              { to: "/admin/groups", icon: <Group />, label: "Groups" },
-              { to: "/admin/messages", icon: <Message />, label: "Messages" },
-            ].map((item) => (
-              <Link
+            {adminMenu.map((item) => (
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "")}
                 to={item.to}
                 key={item.label}
                 style={{ textDecoration: "none" }}
@@ -121,7 +125,7 @@ const AdminSidebar = () => {
                 >
                   {item.label}
                 </Button>
-              </Link>
+              </NavLink>
             ))}
           </Box>
 
