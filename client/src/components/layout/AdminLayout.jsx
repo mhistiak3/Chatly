@@ -8,18 +8,23 @@ export const AdminLayout = memo(({ children }) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAdmin) {
-     return navigate("/admin/login");
+      return navigate("/admin/login");
     }
   }, [isAdmin]);
-  
+
   return (
     <Box>
       <Grid2 container>
         <Grid2 size={{ xs: 12, sm: 3, xl: 2 }}>
           <AdminSidebar />
         </Grid2>
-        <Grid2 size={{ xs: 12, sm: 9, xl: 10 }}>{children}</Grid2>
+        <Grid2
+          size={{ xs: 12, sm: 9, xl: 10 }}
+          sx={{ height: "100vh", overflowY: "auto" }}
+        >
+          {children}
+        </Grid2>
       </Grid2>
     </Box>
   );
-})
+});
