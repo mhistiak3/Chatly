@@ -301,6 +301,7 @@ export const sampleGroup = [
     id: 1,
     name: "Developers",
     avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+    admin: 1,
     members: [
       {
         id: 1,
@@ -322,6 +323,7 @@ export const sampleGroup = [
   {
     id: 2,
     name: "Designers",
+    admin: 4,
     avatar: "https://randomuser.me/api/portraits/men/5.jpg",
     members: [
       {

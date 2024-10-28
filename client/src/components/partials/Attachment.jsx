@@ -18,15 +18,16 @@ const Attachment = ({ url }) => {
   const fileType = getFileType(url);
 
   return (
-    <Box >
+    <Box>
       {fileType === "image" && (
         <Box
           component="img"
           src={url}
           alt="attachment"
           sx={{
-            
-            height: "auto",
+            objectFit: "cover",
+            width: "100%",
+            height: "100%",
             borderRadius: "8px",
             marginBottom: "0.5rem",
           }}
@@ -54,7 +55,7 @@ const Attachment = ({ url }) => {
           alt="audio attachment"
           sx={{
             width: "100%",
-            height: "auto",
+            height: "100%",
             borderRadius: "8px",
             marginBottom: "0.5rem",
           }}
@@ -71,6 +72,8 @@ const Attachment = ({ url }) => {
             backgroundColor: "#f5f5f5",
             marginBottom: "0.5rem",
             color: "#555",
+            width: "100%",
+            height: "100%",
           }}
         >
           <InsertDriveFileIcon fontSize="large" />

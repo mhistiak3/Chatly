@@ -13,7 +13,6 @@ const GroupsManagement = () => {
       headerName: "Avatar",
       width: 130,
       renderCell: (params) => {
-        console.log(params);
         return <Avatar alt={params.row.name} src={params.row.avatar} />;
       },
     },
@@ -23,7 +22,11 @@ const GroupsManagement = () => {
       headerName: "Total Members",
       type: "number",
       width: 150,
-      renderCell: (params) => <Typography sx={{textAlign: "center"}}>{params.row.members.length}</Typography>,
+      renderCell: (params) => (
+        <Typography sx={{ textAlign: "center" }}>
+          {params.row.members.length}
+        </Typography>
+      ),
     },
     {
       field: "members",
@@ -31,7 +34,24 @@ const GroupsManagement = () => {
       type: "number",
       width: 200,
       renderCell: (params) => (
-        <AvatarCard avatar={params.row.members.map((m) => m.avatar)} groupChat={true} />
+        <AvatarCard
+          avatar={params.row.members.map((m) => m.avatar)}
+          groupChat={true}
+        />
+      ),
+    },
+    {
+      field: "onwerName",
+      headerName: "Created By",
+      width: 150,
+      renderCell: (params) => (
+        <Avatar
+          src={
+            params.row.members.find((m) => {
+              return m.id === params.row.admin;
+            }).avatar
+          }
+        />
       ),
     },
   ];

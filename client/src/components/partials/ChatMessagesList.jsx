@@ -29,7 +29,13 @@ export const ChatMessagesList = memo(({ messages, handleMessageOptions }) => {
           >
             {/* Check if attachments exist and if it's an image */}
             {msg.attachments.length > 0 && msg.attachments[0].url && (
-              <Attachment url={msg.attachments[0].url} />
+              <a
+                href={msg.attachments[0].url}
+                target={"_blank"}
+                style={{ width: "200px", display: 'inline-block' }}
+              >
+                <Attachment url={msg.attachments[0].url} />
+              </a>
             )}
             <Typography>{msg.content}</Typography>
 
