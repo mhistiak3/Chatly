@@ -57,21 +57,92 @@ export const smapleUsers = [
   {
     id: 1,
     name: "John Doe",
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
   },
   {
     id: 2,
     name: "Jane Smith",
+    avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
   },
   {
     id: 3,
     name: "Alice Johnson",
     avatar: "https://randomuser.me/api/portraits/women/3.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
   },
   {
     id: 4,
     name: "Bob Brown",
     avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
   },
+  {
+    id: 5,
+    name: "Bob Brown",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
+  },
+  {
+    id: 666,
+    name: "Bob Brown",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
+  },
+  {
+    id: 55,
+    name: "Bob Brown",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
+  },
+  {
+    id:44,
+    name: "Bob Brown",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
+  },
+  {
+    id: 11,
+    name: "Bob Brown",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
+  },
+  {
+    id:111,
+    name: "Bob Brown",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
+  },
+  {
+    id:123,
+    name: "Bob Brown",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    username: "jhon.doe",
+    friends: [2, 3, 4],
+    groups: [1, 2],
+  },
+ 
 ];
 // Dummy notification data
 export const smapleNotifications = [
@@ -229,6 +300,7 @@ export const sampleGroup = [
   {
     id: 1,
     name: "Developers",
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
     members: [
       {
         id: 1,
@@ -250,6 +322,7 @@ export const sampleGroup = [
   {
     id: 2,
     name: "Designers",
+    avatar: "https://randomuser.me/api/portraits/men/5.jpg",
     members: [
       {
         id: 4,
@@ -259,3 +332,4 @@ export const sampleGroup = [
     ],
   },
 ];
+

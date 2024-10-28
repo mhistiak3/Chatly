@@ -1,5 +1,5 @@
 import { Box, Grid2 } from "@mui/material";
-import { lazy, memo, useEffect } from "react";
+import { lazy, memo, Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const AdminSidebar = lazy(() => import("../admins/AdminSidebar"));
 const isAdmin = true;
@@ -16,7 +16,9 @@ export const AdminLayout = memo(({ children }) => {
     <Box>
       <Grid2 container>
         <Grid2 size={{ xs: 12, sm: 3, xl: 2 }}>
-          <AdminSidebar />
+          <Suspense fallback={<div>Loading...</div>}>
+            <AdminSidebar />
+          </Suspense>
         </Grid2>
         <Grid2
           size={{ xs: 12, sm: 9, xl: 10 }}

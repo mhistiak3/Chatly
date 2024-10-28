@@ -75,7 +75,6 @@ const doughnutChartOptions = {
       enabled: true,
     },
   },
-  cutout: "70%", // Adjust to control the inner cutout size
 };
 
 export const DoughnutChart = ({ value = [] }) => {
@@ -92,5 +91,5 @@ export const DoughnutChart = ({ value = [] }) => {
        },
      ],
    };
-  return <Doughnut data={data} doughnutChartIptions={doughnutChartOptions} />;
+  return <Doughnut data={data} options={doughnutChartOptions} />;
 };
