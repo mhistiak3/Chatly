@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config/config.js";
+import { JWT_SECRET, JWT_VALID_TIME } from "../config/config.js";
 const createToken = (userId) => {
   const token = jwt.sign({ userId }, JWT_SECRET, {
-    expiresIn: 15 * 24 * 60 * 60 * 1000,
+    expiresIn: Number(JWT_VALID_TIME),
   });
   return token;
 };

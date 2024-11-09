@@ -12,6 +12,8 @@ import helmet from "helmet";
 import { APP_PORT, MONGO_DB_URI } from "./config/config.js";
 import userRouters from "./routes/user.routes.js";
 import { connectDB } from "./config/mogodb.config.js";
+import defaultErrorHandler from "./middleware/default.error.handler.js";
+import cookieParser from "cookie-parser";
 
 // app object
 const app = express();
@@ -20,17 +22,13 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet({}));
+app.use(cookieParser());
 
 // routes
 app.use("/api/v1/user", userRouters);
 
 // defult error handler
-app.use(function (req, res, next, error) {
-  res.json({
-    type: "fail",
-    message: error.message,
-  });
-});
+app.use(defaultErrorHandler);
 // listen port
 app.listen(APP_PORT, async () => {
   await connectDB(MONGO_DB_URI);
