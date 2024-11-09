@@ -83,3 +83,14 @@ export const profileController = TryCatch(async (req, res) => {
   }
   res.status(200).json({ type: "success", user });
 });
+
+// logout
+export const logoutController = TryCatch(async (req, res) => {
+  res
+    .status(200)
+    .clearCookie("chatly-token", {
+      sameSite: "none",
+      httpOnly: true,
+    })
+    .json({ type: "success", message: "User logout success" });
+});
