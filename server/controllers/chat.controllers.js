@@ -28,7 +28,30 @@ export const newGroupChatController = TryCatch(async (req, res) => {
 });
 
 export const getChatController = TryCatch(async (req, res) => {
-  const chats = await Chat.find({ members: req.userId }).populate("members", "name username avatar");
+  const chats = await Chat.find({ members: req.userId }).populate(
+    "members",
+    "name username avatar"
+  );
 
-  return res.status(201).json({ success: true, chats });
+  const transformedChats = chats.map((chat) => {
+    return {
+      _id: chat._id,
+      name: chat.name,
+      members: chat.members.reduce((prev, current) => {
+        if (current._id.toString() !== req.userId.toString()) {
+          prev.push(current._id.toString());
+        }
+        return prev;
+      }, []),
+      groupChat: chat.groupChat,
+      creator: chat.creator,
+      avatars: chat.groupChat
+        ? chat.members.slice(0, 3).map((member) => member.avatar)
+        : chat.members.find(
+            (member) => member._id.toString() !== req.userId.toString()
+          ).avatar,
+    };
+  });
+
+  return res.status(201).json({ success: true, chats: transformedChats });
 });
