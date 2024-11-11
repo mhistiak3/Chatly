@@ -8,7 +8,7 @@ export const TryCatch = (fn) => async (req, res, next) => {
 
 export default function customErrorHandler(res, message, statusCode) {
   res.status(statusCode).json({
-    type: "fail",
+    success: false,
     message,
   });
 }

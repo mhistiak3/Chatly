@@ -42,7 +42,7 @@ export const registerController = TryCatch(async (req, res) => {
       httpOnly: true,
     })
     .json({
-      type: "success",
+      success: true,
       message: "User register success",
       token,
     });
@@ -69,7 +69,7 @@ export const loginController = TryCatch(async (req, res) => {
       httpOnly: true,
     })
     .json({
-      type: "success",
+      success: true,
       message: "User login success",
       token,
     });
@@ -81,7 +81,7 @@ export const profileController = TryCatch(async (req, res) => {
   if (!user) {
     return customErrorHandler(res, "User not found", 404);
   }
-  res.status(200).json({ type: "success", user });
+  res.status(200).json({ success: true, user });
 });
 
 // logout
@@ -92,5 +92,13 @@ export const logoutController = TryCatch(async (req, res) => {
       sameSite: "none",
       httpOnly: true,
     })
-    .json({ type: "success", message: "User logout success" });
+    .json({ success: true, message: "User logout success" });
+});
+
+// search user
+export const searchUserController = TryCatch(async (req, res) => {
+  const { name } = req.query;
+
+  // response
+  res.status(200).json({ success: true, user: name });
 });

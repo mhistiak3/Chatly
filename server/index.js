@@ -9,11 +9,14 @@
 // import module
 import express from "express";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import { APP_PORT, MONGO_DB_URI } from "./config/config.js";
-import userRouters from "./routes/user.routes.js";
+import userRoutes from "./routes/user.routes.js";
+import chatRoutes from "./routes/chat.routes.js";
+
 import { connectDB } from "./config/mogodb.config.js";
 import defaultErrorHandler from "./middleware/default.error.handler.js";
-import cookieParser from "cookie-parser";
+
 
 // app object
 const app = express();
@@ -25,7 +28,8 @@ app.use(helmet({}));
 app.use(cookieParser());
 
 // routes
-app.use("/api/v1/user", userRouters);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/chat", chatRoutes);
 
 // defult error handler
 app.use(defaultErrorHandler);
