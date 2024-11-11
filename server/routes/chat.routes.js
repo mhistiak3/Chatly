@@ -9,7 +9,11 @@
 // import module
 import express from "express";
 import { isAuthenticated } from "../middleware/auth.middleware.js";
-import { getChatController, newGroupChatController } from "../controllers/chat.controllers.js";
+import {
+  getUserChatController,
+  getUserGroupsController,
+  newGroupChatController,
+} from "../controllers/chat.controllers.js";
 
 // routes
 const router = express.Router();
@@ -18,6 +22,7 @@ const router = express.Router();
 router.use(isAuthenticated); 
 // new group chat
 router.post("/new-group", newGroupChatController);
-router.get("/get-chats", getChatController);
+router.get("/get-user-chats", getUserChatController);
+router.get("/get-user-groups", getUserGroupsController);
 
 export default router;

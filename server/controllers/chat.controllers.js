@@ -27,12 +27,13 @@ export const newGroupChatController = TryCatch(async (req, res) => {
   return res.status(201).json({ success: true, message: "Group chat created" });
 });
 
-export const getChatController = TryCatch(async (req, res) => {
+export const getUserChatController = TryCatch(async (req, res) => {
   const chats = await Chat.find({ members: req.userId }).populate(
     "members",
     "name username avatar"
   );
 
+  //   transform chats
   const transformedChats = chats.map((chat) => {
     return {
       _id: chat._id,
@@ -54,4 +55,24 @@ export const getChatController = TryCatch(async (req, res) => {
   });
 
   return res.status(201).json({ success: true, chats: transformedChats });
+});
+
+// get groups
+export const getUserGroupsController = TryCatch(async (req, res) => {
+  const groups = await Chat.find({
+    groupChat: true,
+    creator: req.userId,
+    members: req.userId,
+  }).populate("members", "name username avatar");
+
+  const transformedGroups = groups.map((group) => {
+    return {
+      _id: group._id,
+      name: group.name,
+      avatars: group.members.slice(0, 3).map((member) => member.avatar)
+      ,
+    };
+  });
+
+  return res.status(201).json({ success: true, groups: transformedGroups });
 });
