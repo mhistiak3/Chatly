@@ -6,7 +6,7 @@ const ChatSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    gouptChat: {
+    groupChat: {
       type: Boolean,
       default: false,
     },

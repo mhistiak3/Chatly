@@ -26,3 +26,9 @@ export const newGroupChatController = TryCatch(async (req, res) => {
 
   return res.status(201).json({ success: true, message: "Group chat created" });
 });
+
+export const getChatController = TryCatch(async (req, res) => {
+  const chats = await Chat.find({ members: req.userId }).populate("members", "name username avatar");
+
+  return res.status(201).json({ success: true, chats });
+});
