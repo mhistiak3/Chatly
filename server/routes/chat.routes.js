@@ -13,6 +13,7 @@ import {
     addMemberToGroupController,
   getUserChatController,
   getUserGroupsController,
+  leaveMemberFromGroupController,
   newGroupChatController,
   removeMemberFromGroupController,
 } from "../controllers/chat.controllers.js";
@@ -24,10 +25,12 @@ const router = express.Router();
 router.use(isAuthenticated); 
 // all chats 
 router.get("/get-user-chats", getUserChatController);
+
 // group chat related routes
 router.post("/new-group", newGroupChatController);
 router.get("/get-user-groups", getUserGroupsController);
 router.put("/add-members-to-group", addMemberToGroupController);
-router.delete("/remove-members-from-group", removeMemberFromGroupController);
+router.put("/remove-members-from-group", removeMemberFromGroupController);
+router.delete("/leave-member-from-group/:chatId", leaveMemberFromGroupController);
 
 export default router;

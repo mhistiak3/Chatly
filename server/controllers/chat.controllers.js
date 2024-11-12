@@ -5,7 +5,7 @@ import customErrorHandler, {
   TryCatch,
 } from "../services/custom.error.handler.js";
 import { emitEvent } from "../utils/features.js";
-import { membersWithIds } from "../utils/helper.js";
+import { findNameById, membersWithIds } from "../utils/helper.js";
 
 const newGroupChatController = TryCatch(async (req, res) => {
   const { name, members } = req.body;
@@ -98,14 +98,18 @@ const addMemberToGroupController = TryCatch(async (req, res) => {
     return customErrorHandler(res, "Not a group chat", 400);
   }
 
+
+
   //   check if user is the creator
   if (groupChat.creator.toString() !== req.userId.toString()) {
     return customErrorHandler(res, "You are not allwed to add members", 401);
   }
 
   // added members name
+
+  
   const allMembersName = await User.find({
-    _id: { $in: membersWithIds(members) },
+    _id: { $in: members },
   }).select("name")
 
   //   check if user is already in the group and add members to group
@@ -157,15 +161,16 @@ const removeMemberFromGroupController = TryCatch(async (req, res) => {
   if (isGroup.creator.toString() !== req.userId.toString()) {
     return customErrorHandler(res, "You are not allwed to remove members", 401);
   }
+  if(isGroup.creator.toString() === memberId.toString()) {
+    return customErrorHandler(res, "You can't remove the creator", 400);
+  }
 
   // check if group has at least 3 members
   if (isGroup.members.length <= 3) {
     return customErrorHandler(res, "Group must have at least 3 members", 400);
   }
 
-  let removedMemberName = isGroup.members.find(
-    (member) => member._id.toString() === memberId
-  ).name;
+  let removedMemberName = findNameById(isGroup.members, memberId);
   // remove member from group
   isGroup.members = isGroup.members.filter(
     (member) => member._id.toString() !== memberId
@@ -181,9 +186,62 @@ const removeMemberFromGroupController = TryCatch(async (req, res) => {
   );
   emitEvent(req, "REFETCH_CHATS", membersWithIds(isGroup.members));
 
-  return res.status(201).json({
+  return res.status(200).json({
     success: true,
     message: `${removedMemberName}  have been removed from ${isGroup.name} group chat`,
+  });
+});
+
+// leave group
+const leaveMemberFromGroupController = TryCatch(async (req, res) => {
+  // get data and validate
+  const { chatId } = req.params;
+  const memberId = req.userId;
+  console.log(memberId);
+
+  
+  if (!chatId || !memberId) {
+    return customErrorHandler(res, "ChatId and members are required", 400);
+  }
+
+  // check if group exists and is a group
+  const isGroup = await Chat.findOne({
+    _id: chatId,
+    members: memberId,
+  }).populate("members", "name");
+  if (!isGroup) {
+    return customErrorHandler(res, "Group or member not found", 404);
+  }
+  if (!isGroup.groupChat) {
+    return customErrorHandler(res, "Not a group chat", 400);
+  }
+ 
+    let leaveMemberName = findNameById(isGroup.members, memberId);
+  // leave member and creator ar same
+  let remainingMembers = isGroup.members.filter(
+    (member) => member._id.toString() !== memberId
+  )
+  if (isGroup.creator.toString() === req.userId.toString()) {
+   let randomMember = remainingMembers[Math.floor(Math.random() * remainingMembers.length)];
+   isGroup.creator = randomMember._id;
+  }
+
+  // leave member from group
+  isGroup.members = remainingMembers;
+  await isGroup.save();
+
+  // emit event
+  emitEvent(
+    req,
+    ALERT,
+    membersWithIds(isGroup.members),
+    `${leaveMemberName} has benn leaved from ${isGroup.name} group chat`
+  );
+  emitEvent(req, "REFETCH_CHATS", membersWithIds(isGroup.members));
+
+  return res.status(200).json({
+    success: true,
+    message: `you  have been leved from ${isGroup.name} group chat`,
   });
 });
 
@@ -193,4 +251,5 @@ export {
   getUserGroupsController,
   addMemberToGroupController,
   removeMemberFromGroupController,
+  leaveMemberFromGroupController,
 };
