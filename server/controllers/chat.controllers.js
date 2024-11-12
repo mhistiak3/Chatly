@@ -1,12 +1,17 @@
 import { ALERT } from "../constants/events.js";
 import Chat from "../models/chat.model.js";
+import User from "../models/user.model.js";
 import customErrorHandler, {
   TryCatch,
 } from "../services/custom.error.handler.js";
 import { emitEvent } from "../utils/features.js";
+import { membersWithIds } from "../utils/helper.js";
 
-export const newGroupChatController = TryCatch(async (req, res) => {
+const newGroupChatController = TryCatch(async (req, res) => {
   const { name, members } = req.body;
+  if (!name || !members) {
+    return customErrorHandler(res, "Name and members are required", 400);
+  }
 
   if (members.length < 2) {
     return customErrorHandler(res, "At least 3 members are required", 400);
@@ -27,7 +32,7 @@ export const newGroupChatController = TryCatch(async (req, res) => {
   return res.status(201).json({ success: true, message: "Group chat created" });
 });
 
-export const getUserChatController = TryCatch(async (req, res) => {
+const getUserChatController = TryCatch(async (req, res) => {
   const chats = await Chat.find({ members: req.userId }).populate(
     "members",
     "name username avatar"
@@ -38,6 +43,11 @@ export const getUserChatController = TryCatch(async (req, res) => {
     return {
       _id: chat._id,
       name: chat.name,
+      avatars: chat.groupChat
+        ? chat.members.slice(0, 3).map((member) => member.avatar)
+        : chat.members.find(
+            (member) => member._id.toString() !== req.userId.toString()
+          ).avatar,
       members: chat.members.reduce((prev, current) => {
         if (current._id.toString() !== req.userId.toString()) {
           prev.push(current._id.toString());
@@ -46,11 +56,6 @@ export const getUserChatController = TryCatch(async (req, res) => {
       }, []),
       groupChat: chat.groupChat,
       creator: chat.creator,
-      avatars: chat.groupChat
-        ? chat.members.slice(0, 3).map((member) => member.avatar)
-        : chat.members.find(
-            (member) => member._id.toString() !== req.userId.toString()
-          ).avatar,
     };
   });
 
@@ -58,7 +63,7 @@ export const getUserChatController = TryCatch(async (req, res) => {
 });
 
 // get groups
-export const getUserGroupsController = TryCatch(async (req, res) => {
+const getUserGroupsController = TryCatch(async (req, res) => {
   const groups = await Chat.find({
     groupChat: true,
     creator: req.userId,
@@ -69,10 +74,123 @@ export const getUserGroupsController = TryCatch(async (req, res) => {
     return {
       _id: group._id,
       name: group.name,
-      avatars: group.members.slice(0, 3).map((member) => member.avatar)
-      ,
+      avatars: group.members.slice(0, 3).map((member) => member.avatar),
     };
   });
 
   return res.status(201).json({ success: true, groups: transformedGroups });
 });
+
+// add members to group
+const addMemberToGroupController = TryCatch(async (req, res) => {
+  // get data and validate
+  const { chatId, members } = req.body;
+  if (!chatId || !members || !members.length) {
+    return customErrorHandler(res, "ChatId and members are required", 400);
+  }
+
+  //   check if group exists and is a group
+  const groupChat = await Chat.findById(chatId).populate("members", "name");
+  if (!groupChat) {
+    return customErrorHandler(res, "Group not found", 404);
+  }
+  if (!groupChat.groupChat) {
+    return customErrorHandler(res, "Not a group chat", 400);
+  }
+
+  //   check if user is the creator
+  if (groupChat.creator.toString() !== req.userId.toString()) {
+    return customErrorHandler(res, "You are not allwed to add members", 401);
+  }
+
+  // added members name
+  const allMembersName = await User.find({
+    _id: { $in: membersWithIds(members) },
+  }).select("name")
+
+  //   check if user is already in the group and add members to group
+  groupChat.members = [
+    ...new Set([...groupChat.members.map((m) => m._id.toString()), ...members]),
+  ];
+  if (groupChat.members.length > 100) {
+    customErrorHandler(res, "You can't add more than 100 members", 400);
+  }
+  await groupChat.save();
+
+  // emit event
+  emitEvent(
+    req,
+    ALERT,
+    membersWithIds(groupChat.members),
+    `${allMembersName.map((member) => member.name).join(", ")} has been added to ${groupChat.name} group chat`
+  );
+  emitEvent(
+    req,
+    "REFETCH_CHATS",
+    membersWithIds(groupChat.members)
+  );
+  return res.status(201).json({
+    success: true,
+    message: `You have been added to ${groupChat.name} group chat`,
+  });
+});
+
+// remove members from group
+const removeMemberFromGroupController = TryCatch(async (req, res) => {
+  // get data and validate
+  const { chatId, memberId } = req.body;
+  if (!chatId || !memberId) {
+    return customErrorHandler(res, "ChatId and members are required", 400);
+  }
+
+  // check if group exists and is a group
+  const isGroup = await Chat.findOne({
+    _id: chatId,
+    members: memberId,
+  }).populate("members", "name");
+  if (!isGroup) {
+    return customErrorHandler(res, "Group or member not found", 404);
+  }
+  if (!isGroup.groupChat) {
+    return customErrorHandler(res, "Not a group chat", 400);
+  }
+  if (isGroup.creator.toString() !== req.userId.toString()) {
+    return customErrorHandler(res, "You are not allwed to remove members", 401);
+  }
+
+  // check if group has at least 3 members
+  if (isGroup.members.length <= 3) {
+    return customErrorHandler(res, "Group must have at least 3 members", 400);
+  }
+
+  let removedMemberName = isGroup.members.find(
+    (member) => member._id.toString() === memberId
+  ).name;
+  // remove member from group
+  isGroup.members = isGroup.members.filter(
+    (member) => member._id.toString() !== memberId
+  );
+  await isGroup.save();
+
+  // emit event
+  emitEvent(
+    req,
+    ALERT,
+    membersWithIds(isGroup.members),
+    `${removedMemberName} have been removed from ${isGroup.name} group chat`
+  );
+  emitEvent(req, "REFETCH_CHATS", membersWithIds(isGroup.members));
+
+  return res.status(201).json({
+    success: true,
+    message: `${removedMemberName}  have been removed from ${isGroup.name} group chat`,
+  });
+});
+
+export {
+  newGroupChatController,
+  getUserChatController,
+  getUserGroupsController,
+  addMemberToGroupController,
+  removeMemberFromGroupController,
+};

@@ -1,5 +1,5 @@
 function emitEvent(req, event, users, data) {
-  console.log("Emiting event");
+  console.log("Emiting event: " + data)
 }
 
 export { emitEvent };
