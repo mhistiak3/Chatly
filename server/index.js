@@ -13,6 +13,7 @@ import cookieParser from "cookie-parser";
 import { APP_PORT, MONGO_DB_URI } from "./config/config.js";
 import userRoutes from "./routes/user.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
+import messageRoutes from "./routes/message.routes.js";
 
 import { connectDB } from "./config/mogodb.config.js";
 import defaultErrorHandler from "./middleware/default.error.handler.js";
@@ -30,6 +31,7 @@ app.use(cookieParser());
 // routes
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/chat", chatRoutes);
+app.use("/api/v1/message", messageRoutes);
 
 // defult error handler
 app.use(defaultErrorHandler);

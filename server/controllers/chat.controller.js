@@ -221,6 +221,9 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
   let remainingMembers = isGroup.members.filter(
     (member) => member._id.toString() !== memberId
   )
+  if (remainingMembers.length === 1) {
+    return customErrorHandler(res, "Only one member in group chat, can't leave insted delete group", 400);
+  }
   if (isGroup.creator.toString() === req.userId.toString()) {
    let randomMember = remainingMembers[Math.floor(Math.random() * remainingMembers.length)];
    isGroup.creator = randomMember._id;

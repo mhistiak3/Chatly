@@ -5,13 +5,13 @@ import {
   profileController,
   registerController,
   searchUserController,
-} from "../controllers/user.controllers.js";
-import { avatarUpload } from "../middleware/multer.js";
+} from "../controllers/user.controller.js";
+import { singleAvatar } from "../middleware/multer.js";
 import { isAuthenticated } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/register", avatarUpload.any(), registerController);
+router.post("/register", singleAvatar, registerController);
 router.post("/login", loginController);
 
 // Protected route

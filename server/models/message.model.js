@@ -16,12 +16,12 @@ const MessageSchema = new mongoose.Schema(
       },
     ],
     sender: {
-      type: Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "User",
       required: true,
     },
     chat: {
-      type: Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Chat",
       required: true,
     },
