@@ -70,10 +70,6 @@ const sendAttachmentsController = TryCatch(async (req, res) => {
     .json({ success: true, message: "Attachment sent successfully" });
 });
 
-// Chat details Controller
-const getChatMessagesController = TryCatch(async (req, res) => {
-  
-  return res.status(200).json({ success: true, chat });
-});
 
-export { sendAttachmentsController, getChatMessagesController };
+
+export { sendAttachmentsController,  };

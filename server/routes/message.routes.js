@@ -10,7 +10,7 @@
 import express from "express";
 import { isAuthenticated } from "../middleware/auth.middleware.js";
 import { attchmentsUpload } from "../middleware/multer.js";
-import { getChatMessagesController, sendAttachmentsController } from "../controllers/message.controller.js";
+import { sendAttachmentsController } from "../controllers/message.controller.js";
 
 
 // routes
@@ -22,7 +22,6 @@ router.use(isAuthenticated);
 // message related routes
 router.post("/send-attachments",attchmentsUpload, sendAttachmentsController);
 
-// Get Chat details
-router.route("/:chatId").get(getChatMessagesController).put().delete();
+
 
 export default router;

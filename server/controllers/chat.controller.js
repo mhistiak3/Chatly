@@ -98,8 +98,6 @@ const addMemberToGroupController = TryCatch(async (req, res) => {
     return customErrorHandler(res, "Not a group chat", 400);
   }
 
-
-
   //   check if user is the creator
   if (groupChat.creator.toString() !== req.userId.toString()) {
     return customErrorHandler(res, "You are not allwed to add members", 401);
@@ -248,6 +246,40 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
   });
 });
 
+// ================== Chats ================== //
+// Chat details Controller
+const getChatDetailsController = TryCatch(async (req, res) => {
+  if (req.query.populate) {
+    const { chatId } = req.params;
+    const chat = await Chat.findById(chatId).populate(
+      "members",
+      "name username avatar"
+    );
+
+    // if chat not exist
+    if (!chat) {
+      return customErrorHandler(res, "Chat not found", 404);
+    }
+    chat.members = chat.members.map(({ name, _id, avatar }) => ({
+      _id,
+      name,
+      avatar: avatar.url,
+    }));
+    return res.status(200).json({ success: true, chat });
+  } else {
+    const { chatId } = req.params;
+    const chat = await Chat.findById(chatId);
+
+    // if chat not exist
+    if (!chat) {
+      return customErrorHandler(res, "Chat not found", 404);
+    }
+
+    return res.status(200).json({ success: true, chat });
+  }
+});
+
+
 export {
   newGroupChatController,
   getUserChatController,
@@ -255,4 +287,5 @@ export {
   addMemberToGroupController,
   removeMemberFromGroupController,
   leaveMemberFromGroupController,
+  getChatDetailsController,
 };

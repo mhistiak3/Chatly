@@ -11,6 +11,7 @@ import express from "express";
 import { isAuthenticated } from "../middleware/auth.middleware.js";
 import {
     addMemberToGroupController,
+  getChatDetailsController,
   getUserChatController,
   getUserGroupsController,
   leaveMemberFromGroupController,
@@ -33,7 +34,8 @@ router.put("/add-members-to-group", addMemberToGroupController);
 router.put("/remove-member-from-group", removeMemberFromGroupController);
 router.delete("/leave-member-from-group/:chatId", leaveMemberFromGroupController);
 
-// message related routes
+// * Get Chat details * 
+router.route("/:chatId").get(getChatDetailsController).put().delete();
 
 
 export default router;
