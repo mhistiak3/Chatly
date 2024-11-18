@@ -6,6 +6,7 @@ import User from "../models/user.model.js";
 import { emitEvent } from "../utils/features.js";
 import { NEW_ATTACHMENTS, NEW_MESSAGE_ALERT } from "../constants/events.js";
 import Message from "../models/message.model.js";
+
 const sendAttachmentsController = TryCatch(async (req, res) => {
   const { chatId } = req.body;
   if (!chatId) {
@@ -70,6 +71,45 @@ const sendAttachmentsController = TryCatch(async (req, res) => {
     .json({ success: true, message: "Attachment sent successfully" });
 });
 
+// get chat messages
+const getChatMessagesController = TryCatch(async (req, res) => {
+  const { chatId } = req.params;
+  const { page = 1 } = req.query;
+  const limit = 20;
+  const skip = (page - 1) * limit;
+  if (!chatId) {
+    return customErrorHandler(res, "ChatId is required", 400);
+  }
 
+  // check if chat exists
+  const chat = await Chat.findById(chatId);
+  if (!chat) {
+    return customErrorHandler(res, "Chat not found", 404);
+  }
 
-export { sendAttachmentsController,  };
+  // check if user is in the chat
+  if (!chat.members.includes(req.userId)) {
+    return customErrorHandler(res, "You are not in the chat", 401);
+  }
+
+  const [messages, totalMessages] = await Promise.all([
+    Message.find({ chat: chatId })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .populate("sender", "name avatar")
+      .lean(),
+    Message.countDocuments({ chat: chatId }),
+  ]);
+
+  const totalPages = Math.ceil(totalMessages / limit);
+
+  // send response
+  res.status(200).json({
+    success: true,
+    messages,
+    totalPages,
+  });
+});
+
+export { sendAttachmentsController, getChatMessagesController };
