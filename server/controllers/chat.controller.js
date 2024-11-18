@@ -17,7 +17,10 @@ const newGroupChatController = TryCatch(async (req, res) => {
     return customErrorHandler(res, "At least 3 members are required", 400);
   }
   //   create group
-  let allmembers = [...members, req.userId];
+  let allmembers = [...new Set([...allmembers, ...members])];
+  if (members.length < 2) {
+    return customErrorHandler(res, "At least 3 members are required", 400);
+  }
   await Chat.create({
     groupChat: true,
     name,
@@ -105,10 +108,9 @@ const addMemberToGroupController = TryCatch(async (req, res) => {
 
   // added members name
 
-  
   const allMembersName = await User.find({
     _id: { $in: members },
-  }).select("name")
+  }).select("name");
 
   //   check if user is already in the group and add members to group
   groupChat.members = [
@@ -124,13 +126,11 @@ const addMemberToGroupController = TryCatch(async (req, res) => {
     req,
     ALERT,
     membersWithIds(groupChat.members),
-    `${allMembersName.map((member) => member.name).join(", ")} has been added to ${groupChat.name} group chat`
+    `${allMembersName
+      .map((member) => member.name)
+      .join(", ")} has been added to ${groupChat.name} group chat`
   );
-  emitEvent(
-    req,
-    "REFETCH_CHATS",
-    membersWithIds(groupChat.members)
-  );
+  emitEvent(req, "REFETCH_CHATS", membersWithIds(groupChat.members));
   return res.status(201).json({
     success: true,
     message: `You have been added to ${groupChat.name} group chat`,
@@ -159,7 +159,7 @@ const removeMemberFromGroupController = TryCatch(async (req, res) => {
   if (isGroup.creator.toString() !== req.userId.toString()) {
     return customErrorHandler(res, "You are not allwed to remove members", 401);
   }
-  if(isGroup.creator.toString() === memberId.toString()) {
+  if (isGroup.creator.toString() === memberId.toString()) {
     return customErrorHandler(res, "You can't remove the creator", 400);
   }
 
@@ -197,7 +197,6 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
   const memberId = req.userId;
   console.log(memberId);
 
-  
   if (!chatId || !memberId) {
     return customErrorHandler(res, "ChatId and members are required", 400);
   }
@@ -213,18 +212,23 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
   if (!isGroup.groupChat) {
     return customErrorHandler(res, "Not a group chat", 400);
   }
- 
-    let leaveMemberName = findNameById(isGroup.members, memberId);
+
+  let leaveMemberName = findNameById(isGroup.members, memberId);
   // leave member and creator ar same
   let remainingMembers = isGroup.members.filter(
     (member) => member._id.toString() !== memberId
-  )
+  );
   if (remainingMembers.length === 1) {
-    return customErrorHandler(res, "Only one member in group chat, can't leave insted delete group", 400);
+    return customErrorHandler(
+      res,
+      "Only one member in group chat, can't leave insted delete group",
+      400
+    );
   }
   if (isGroup.creator.toString() === req.userId.toString()) {
-   let randomMember = remainingMembers[Math.floor(Math.random() * remainingMembers.length)];
-   isGroup.creator = randomMember._id;
+    let randomMember =
+      remainingMembers[Math.floor(Math.random() * remainingMembers.length)];
+    isGroup.creator = randomMember._id;
   }
 
   // leave member from group
@@ -249,12 +253,14 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
 // ================== Chats ================== //
 // Chat details Controller
 const getChatDetailsController = TryCatch(async (req, res) => {
-  if (req.query.populate) {
+  
+  if (Boolean(req.query.populate)) {
     const { chatId } = req.params;
     const chat = await Chat.findById(chatId).populate(
       "members",
       "name username avatar"
-    );
+    ).lean()
+
 
     // if chat not exist
     if (!chat) {
@@ -263,8 +269,9 @@ const getChatDetailsController = TryCatch(async (req, res) => {
     chat.members = chat.members.map(({ name, _id, avatar }) => ({
       _id,
       name,
-      avatar: avatar.url,
+      avatar: avatar?.url,
     }));
+
     return res.status(200).json({ success: true, chat });
   } else {
     const { chatId } = req.params;
@@ -278,7 +285,6 @@ const getChatDetailsController = TryCatch(async (req, res) => {
     return res.status(200).json({ success: true, chat });
   }
 });
-
 
 export {
   newGroupChatController,
