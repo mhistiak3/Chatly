@@ -10,14 +10,15 @@
 import express from "express";
 import { isAuthenticated } from "../middleware/auth.middleware.js";
 import {
-    addMemberToGroupController,
+  addMemberToGroupController,
+  deleteChatController,
   getChatDetailsController,
   getUserChatController,
   getUserGroupsController,
   leaveMemberFromGroupController,
   newGroupChatController,
   removeMemberFromGroupController,
-  renameGroup,
+  renameGroupController,
 } from "../controllers/chat.controller.js";
 
 // routes
@@ -36,7 +37,11 @@ router.put("/remove-member-from-group", removeMemberFromGroupController);
 router.delete("/leave-member-from-group/:chatId", leaveMemberFromGroupController);
 
 // * Get Chat details * 
-router.route("/:chatId").get(getChatDetailsController).put(renameGroup).delete();
+router
+  .route("/:chatId")
+  .get(getChatDetailsController)
+  .put(renameGroupController)
+  .delete(deleteChatController);
 
 
 export default router;

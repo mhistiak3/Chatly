@@ -1,9 +1,11 @@
 import { ALERT } from "../constants/events.js";
 import Chat from "../models/chat.model.js";
 import User from "../models/user.model.js";
+import Message from "../models/message.model.js";
 import customErrorHandler, {
   TryCatch,
 } from "../services/custom.error.handler.js";
+import { deleteFilesFromCloudinary } from "../utils/cloudinary.js";
 import { emitEvent } from "../utils/features.js";
 import { findNameById, membersWithIds } from "../utils/helper.js";
 
@@ -47,7 +49,7 @@ const newGroupChatController = TryCatch(async (req, res) => {
     return customErrorHandler(res, "At least 3 members are required", 400);
   }
   //   create group
-  let allmembers = [...new Set([...allmembers, ...members])];
+  let allmembers = [...new Set([ ...members,req.userId ])];
   if (members.length < 2) {
     return customErrorHandler(res, "At least 3 members are required", 400);
   }
@@ -251,7 +253,7 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
 });
 
 // rename group
-const renameGroup = TryCatch(async (req, res) => {
+const renameGroupController = TryCatch(async (req, res) => {
   const { chatId } = req.params;
   const { name } = req.body;
   if (!chatId || !name) {
@@ -266,7 +268,6 @@ const renameGroup = TryCatch(async (req, res) => {
   if (!isGroup.groupChat) {
     return customErrorHandler(res, "Not a group chat", 400);
   }
-
 
   // check if user is the creator
   if (isGroup.creator.toString() !== req.userId.toString()) {
@@ -317,6 +318,51 @@ const getChatDetailsController = TryCatch(async (req, res) => {
   }
 });
 
+// delete chat
+const deleteChatController = TryCatch(async (req, res) => {
+  const { chatId } = req.params;
+  if (!chatId) {
+    return customErrorHandler(res, "ChatId is required", 400);
+  }
+  const chat = await Chat.findById(chatId);
+  if (!chat) {
+    return customErrorHandler(res, "Chat not found", 404);
+  }
+
+  // check if user is the creator
+  if (chat.groupChat && chat.creator.toString() !== req.userId.toString()) {
+    return customErrorHandler(res, "You are not allwed to delete chat", 401);
+  }
+
+  if (!chat.groupChat && !chat.members.includes(req.userId.toString())) {
+    return customErrorHandler(res, "You are not allwed to delete chat", 401);
+  }
+
+  // Here we delete all messages also all attachments from cloudinary
+  const messageWithAttachments = await Message.find({
+    chat: chatId,
+    attachments: { $exists: true, $ne: [] },
+  });
+  const publicIds = [];
+  messageWithAttachments.forEach(({ attachments }) => {
+    attachments.forEach(({ public_id }) => {
+      publicIds.push(public_id);
+    });
+  });
+  // all dlete promise
+  await Promise.all([
+    deleteFilesFromCloudinary(publicIds),
+    chat.deleteOne(),
+    Message.deleteMany({ chat: chatId }),
+  ]);
+
+  // emit event
+  emitEvent(req, "REFETCH_CHATS",membersWithIds(chat.members));
+
+  // response
+  return res.status(200).json({ success: true, message: "Chat deleted successfully" });
+});
+
 export {
   getUserChatController,
   newGroupChatController,
@@ -324,6 +370,7 @@ export {
   addMemberToGroupController,
   removeMemberFromGroupController,
   leaveMemberFromGroupController,
-  renameGroup,
+  renameGroupController,
   getChatDetailsController,
+  deleteChatController,
 };
