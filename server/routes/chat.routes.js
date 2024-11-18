@@ -17,6 +17,7 @@ import {
   leaveMemberFromGroupController,
   newGroupChatController,
   removeMemberFromGroupController,
+  renameGroup,
 } from "../controllers/chat.controller.js";
 
 // routes
@@ -35,7 +36,7 @@ router.put("/remove-member-from-group", removeMemberFromGroupController);
 router.delete("/leave-member-from-group/:chatId", leaveMemberFromGroupController);
 
 // * Get Chat details * 
-router.route("/:chatId").get(getChatDetailsController).put().delete();
+router.route("/:chatId").get(getChatDetailsController).put(renameGroup).delete();
 
 
 export default router;

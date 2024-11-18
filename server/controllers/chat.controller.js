@@ -7,34 +7,6 @@ import customErrorHandler, {
 import { emitEvent } from "../utils/features.js";
 import { findNameById, membersWithIds } from "../utils/helper.js";
 
-const newGroupChatController = TryCatch(async (req, res) => {
-  const { name, members } = req.body;
-  if (!name || !members) {
-    return customErrorHandler(res, "Name and members are required", 400);
-  }
-
-  if (members.length < 2) {
-    return customErrorHandler(res, "At least 3 members are required", 400);
-  }
-  //   create group
-  let allmembers = [...new Set([...allmembers, ...members])];
-  if (members.length < 2) {
-    return customErrorHandler(res, "At least 3 members are required", 400);
-  }
-  await Chat.create({
-    groupChat: true,
-    name,
-    members: allmembers,
-    creator: req.userId,
-  });
-
-  // emit event
-  emitEvent(req, ALERT, allmembers, `Welcome to ${name} group chat`);
-  emitEvent(req, "REFETCH_CHATS", allmembers);
-
-  return res.status(201).json({ success: true, message: "Group chat created" });
-});
-
 const getUserChatController = TryCatch(async (req, res) => {
   const chats = await Chat.find({ members: req.userId }).populate(
     "members",
@@ -63,6 +35,34 @@ const getUserChatController = TryCatch(async (req, res) => {
   });
 
   return res.status(201).json({ success: true, chats: transformedChats });
+});
+
+const newGroupChatController = TryCatch(async (req, res) => {
+  const { name, members } = req.body;
+  if (!name || !members) {
+    return customErrorHandler(res, "Name and members are required", 400);
+  }
+
+  if (members.length < 2) {
+    return customErrorHandler(res, "At least 3 members are required", 400);
+  }
+  //   create group
+  let allmembers = [...new Set([...allmembers, ...members])];
+  if (members.length < 2) {
+    return customErrorHandler(res, "At least 3 members are required", 400);
+  }
+  await Chat.create({
+    groupChat: true,
+    name,
+    members: allmembers,
+    creator: req.userId,
+  });
+
+  // emit event
+  emitEvent(req, ALERT, allmembers, `Welcome to ${name} group chat`);
+  emitEvent(req, "REFETCH_CHATS", allmembers);
+
+  return res.status(201).json({ success: true, message: "Group chat created" });
 });
 
 // get groups
@@ -250,17 +250,48 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
   });
 });
 
+// rename group
+const renameGroup = TryCatch(async (req, res) => {
+  const { chatId } = req.params;
+  const { name } = req.body;
+  if (!chatId || !name) {
+    return customErrorHandler(res, "ChatId and name are required", 400);
+  }
+
+  // check if group exists and is a group
+  const isGroup = await Chat.findById(chatId);
+  if (!isGroup) {
+    return customErrorHandler(res, "Group not found", 404);
+  }
+  if (!isGroup.groupChat) {
+    return customErrorHandler(res, "Not a group chat", 400);
+  }
+
+
+  // check if user is the creator
+  if (isGroup.creator.toString() !== req.userId.toString()) {
+    return customErrorHandler(res, "You are not allwed to rename group", 401);
+  }
+
+  // rename group
+  isGroup.name = name;
+  await isGroup.save();
+
+  // response
+  return res.status(200).json({
+    success: true,
+    message: `Group has been renamed to ${name}`,
+  });
+});
+
 // ================== Chats ================== //
 // Chat details Controller
 const getChatDetailsController = TryCatch(async (req, res) => {
-  
   if (Boolean(req.query.populate)) {
     const { chatId } = req.params;
-    const chat = await Chat.findById(chatId).populate(
-      "members",
-      "name username avatar"
-    ).lean()
-
+    const chat = await Chat.findById(chatId)
+      .populate("members", "name username avatar")
+      .lean();
 
     // if chat not exist
     if (!chat) {
@@ -287,11 +318,12 @@ const getChatDetailsController = TryCatch(async (req, res) => {
 });
 
 export {
-  newGroupChatController,
   getUserChatController,
+  newGroupChatController,
   getUserGroupsController,
   addMemberToGroupController,
   removeMemberFromGroupController,
   leaveMemberFromGroupController,
+  renameGroup,
   getChatDetailsController,
 };
