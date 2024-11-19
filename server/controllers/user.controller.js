@@ -9,6 +9,10 @@ import { createToken } from "../utils/token.handler.js";
 // Create user and save it to database and set cookie
 export const registerController = TryCatch(async (req, res) => {
   const { name, username, password, bio } = req.body;
+  // chek avatar is uploaded
+  if (!req.file) {
+    return customErrorHandler(res, "Please select an avatar", 400);
+  }
   const avatar = {
     public_id: Date.now() + "",
     url: `https://randomuser.me/api/portraits/men/${Math.round(
