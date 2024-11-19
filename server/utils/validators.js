@@ -45,7 +45,7 @@ const validateHandler = (req, res, next) => {
     .map((error) => error.msg)
     .join(", ");
 
-  customErrorHandler(res, errorMessages);
+  customErrorHandler(res, errorMessages,422);
 };
 
 export { registerValidator, loginValidator, validateHandler };

@@ -75,12 +75,14 @@ const sendAttachmentsController = TryCatch(async (req, res) => {
 const getChatMessagesController = TryCatch(async (req, res) => {
   const { chatId } = req.params;
   const { page = 1 } = req.query;
+
   const limit = 20;
   const skip = (page - 1) * limit;
   if (!chatId) {
     return customErrorHandler(res, "ChatId is required", 400);
   }
-
+  if (isNaN(page)) {
+    return customErrorHandler(res, "Invalid page number", 400);}
   // check if chat exists
   const chat = await Chat.findById(chatId);
   if (!chat) {

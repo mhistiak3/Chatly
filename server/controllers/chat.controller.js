@@ -93,6 +93,9 @@ const addMemberToGroupController = TryCatch(async (req, res) => {
   if (!chatId || !members || !members.length) {
     return customErrorHandler(res, "ChatId and members are required", 400);
   }
+  if (members.length < 2 && members.length > 100) {
+    return customErrorHandler(res, "At least 3 members are required", 400);
+  }
 
   //   check if group exists and is a group
   const groupChat = await Chat.findById(chatId).populate("members", "name");
@@ -197,7 +200,7 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
   // get data and validate
   const { chatId } = req.params;
   const memberId = req.userId;
-  console.log(memberId);
+
 
   if (!chatId || !memberId) {
     return customErrorHandler(res, "ChatId and members are required", 400);
