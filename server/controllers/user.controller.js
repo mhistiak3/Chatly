@@ -103,7 +103,7 @@ export const logoutController = TryCatch(async (req, res) => {
 // search user
 export const searchUserController = TryCatch(async (req, res) => {
   const { name="" } = req.query;
-  
+   
   // find my friends to remove them from search list
   const myChats = await Chat.find({ groupChat: false, members: req.userId });
 
