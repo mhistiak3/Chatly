@@ -7,7 +7,11 @@ import customErrorHandler, {
 } from "../services/custom.error.handler.js";
 import { deleteFilesFromCloudinary } from "../utils/cloudinary.js";
 import { emitEvent } from "../utils/features.js";
-import { findNameById, membersWithIds } from "../utils/helper.js";
+import {
+  findNameById,
+  membersWithIds,
+  membersWithoutMe,
+} from "../utils/helper.js";
 
 const getUserChatController = TryCatch(async (req, res) => {
   const chats = await Chat.find({ members: req.userId }).populate(
@@ -39,6 +43,38 @@ const getUserChatController = TryCatch(async (req, res) => {
   return res.status(201).json({ success: true, chats: transformedChats });
 });
 
+// get friends chat
+const getFriendsController = TryCatch(async (req, res) => {
+  const { chatId } = req.query;
+  // get friends chats
+  const friendChats = await Chat.find({
+    groupChat: false,
+    members: req.userId,
+  }).populate("members", "name avatar");
+
+  // separate my friends
+  const myFriends = friendChats.map(({ members }) => {
+    const otherMembers = membersWithoutMe(members, req.userId);
+    return {
+      _id: otherMembers._id,
+      name: otherMembers.name,
+      avatar: otherMembers.avatar,
+    };
+  });
+
+  // if chatId
+  if (chatId) {
+    const chat = await Chat.findById(chatId);
+    const availableFriends = myFriends.filter(
+      (friend) => !chat.members.includes(friend._id)
+    );
+    return res.status(200).json({ success: true, friends:availableFriends });
+  }
+
+  //   response
+  return res.status(200).json({ success: true, friends:myFriends });
+});
+
 const newGroupChatController = TryCatch(async (req, res) => {
   const { name, members } = req.body;
   if (!name || !members) {
@@ -49,7 +85,7 @@ const newGroupChatController = TryCatch(async (req, res) => {
     return customErrorHandler(res, "At least 3 members are required", 400);
   }
   //   create group
-  let allmembers = [...new Set([ ...members,req.userId ])];
+  let allmembers = [...new Set([...members, req.userId])];
   if (members.length < 2) {
     return customErrorHandler(res, "At least 3 members are required", 400);
   }
@@ -200,7 +236,6 @@ const leaveMemberFromGroupController = TryCatch(async (req, res) => {
   // get data and validate
   const { chatId } = req.params;
   const memberId = req.userId;
-
 
   if (!chatId || !memberId) {
     return customErrorHandler(res, "ChatId and members are required", 400);
@@ -360,14 +395,17 @@ const deleteChatController = TryCatch(async (req, res) => {
   ]);
 
   // emit event
-  emitEvent(req, "REFETCH_CHATS",membersWithIds(chat.members));
+  emitEvent(req, "REFETCH_CHATS", membersWithIds(chat.members));
 
   // response
-  return res.status(200).json({ success: true, message: "Chat deleted successfully" });
+  return res
+    .status(200)
+    .json({ success: true, message: "Chat deleted successfully" });
 });
 
 export {
   getUserChatController,
+  getFriendsController,
   newGroupChatController,
   getUserGroupsController,
   addMemberToGroupController,

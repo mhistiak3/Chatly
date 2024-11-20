@@ -14,6 +14,7 @@ import {
   deleteChatController,
   getChatDetailsController,
   getUserChatController,
+  getFriendsController,
   getUserGroupsController,
   leaveMemberFromGroupController,
   newGroupChatController,
@@ -28,6 +29,9 @@ const router = express.Router();
 router.use(isAuthenticated); 
 // all chats 
 router.get("/get-user-chats", getUserChatController);
+// friend chats
+router.get("/get-friends", getFriendsController);
+
 
 // group chat related routes
 router.post("/new-group", newGroupChatController);
