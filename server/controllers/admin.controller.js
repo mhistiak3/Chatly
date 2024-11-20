@@ -71,11 +71,28 @@ const getAllStatsController = TryCatch(async (req, res) => {
       Message.countDocuments(),
       Chat.countDocuments(),
     ]);
+
+    // chart
+    const today = new Date();
+    const last7Days = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const last7DaysMessages = await Message.find({
+      createdAt: { $gte: last7Days, $lte: today },
+    }).select("createdAt");
+
+    const messages = new Array(7).fill(0);
+    last7DaysMessages.forEach((message) => {
+     const indexApproximate = (today.getTime() - message.createdAt.getTime()) / (1000 * 60 * 60 * 24);
+     const index = Math.floor(indexApproximate);
+     messages[6 - index ]++;
+    });
+
   const statas = {
     groupsCount,
     usersCount,
     messagesCount,
     totaChatCount,
+    last7DaysMessages,
+    messagesChart: messages,
   };
 
   // response
