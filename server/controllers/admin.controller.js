@@ -33,7 +33,7 @@ const adminLoginController = TryCatch(async (req, res) => {
 });
 
 // admin check
-const adminCheckController = TryCatch(async (req, res) => {
+const checkAdminController = TryCatch(async (req, res) => {
   return res.status(200).json({ admin: true });
 });
 
@@ -153,5 +153,5 @@ export {
   getAllChatsController,
   getAllMessagesController,
   getAllStatsController,
-  adminCheckController,
+  checkAdminController,
 };

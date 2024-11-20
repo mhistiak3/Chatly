@@ -22,7 +22,7 @@ const sendAttachmentsController = TryCatch(async (req, res) => {
   if (!chat) {
     return customErrorHandler(res, "Chat not found", 404);
   }
-  const files = req.files || [];
+  const files = req?.files || [];
 
   //   check files
   if (files.length < 1) {
