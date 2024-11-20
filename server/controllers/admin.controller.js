@@ -51,4 +51,20 @@ const getAllChatsController = TryCatch(async (req, res) => {
 
   return res.status(200).json({ success: true, chats: transformedChats });
 });
-export { getAllUsersController, getAllChatsController };
+
+// get all messages
+const getAllMessagesController = TryCatch(async (req, res) => {
+  const messages = await Message.find({})
+    .populate("sender", "name avatar")
+    .populate("chat", "groupChat");
+
+
+    // response
+    return res.status(200).json({ success: true, messages });
+});
+
+export {
+  getAllUsersController,
+  getAllChatsController,
+  getAllMessagesController,
+};
