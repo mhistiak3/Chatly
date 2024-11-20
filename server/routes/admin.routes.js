@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllUsersController } from "../controllers/admin.controller.js";
+import { getAllChatsController, getAllUsersController } from "../controllers/admin.controller.js";
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ const router = express.Router();
 
 // router.get("/states")
 router.get("/get-all-users",getAllUsersController)
-// router.get("/chats")
+router.get("/get-all-chats", getAllChatsController);
 // router.get("/messages")
 
 
