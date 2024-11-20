@@ -1,7 +1,7 @@
 // Defult error handler
 export default function defaultErrorHandler(err, req, res, next) {
-  if (err.kind === "ObjectId") {
-    err.message = "ObjectId is not valid";
+  if (err.name === "CastError") {
+    err.message = `Invalid formate of ${err.path}`;
     err.statusCode = 404;
   }
   if (err.code === 11000) {
