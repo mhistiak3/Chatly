@@ -6,16 +6,18 @@ import {
   getAllStatsController,
   adminLoginController,
   adminLogoutController,
+  checkAdminController,
 } from "../controllers/admin.controller.js";
 import { isAdminAuthenticated } from "../middleware/admin.auth.middleware.js";
 
 const router = express.Router();
 
 // admin routes
-// router.get("/")
+
 router.post("/login", adminLoginController);
 
 router.use(isAdminAuthenticated);
+router.get("/",checkAdminController);
 router.get("/logout", adminLogoutController);
 router.get("/get-stats", getAllStatsController);
 router.get("/get-all-users", getAllUsersController);

@@ -32,6 +32,11 @@ const adminLoginController = TryCatch(async (req, res) => {
     .json({ success: true, token, message: "Admin logged in successfully" });
 });
 
+// admin check
+const adminCheckController = TryCatch(async (req, res) => {
+  return res.status(200).json({ admin: true });
+});
+
 // admin logout
 const adminLogoutController = TryCatch(async (req, res) => {
   return res
@@ -142,9 +147,11 @@ const getAllStatsController = TryCatch(async (req, res) => {
 });
 
 export {
-  getAllUsersController,adminLogoutController,
+  getAllUsersController,
+  adminLogoutController,
   adminLoginController,
   getAllChatsController,
   getAllMessagesController,
   getAllStatsController,
+  adminCheckController,
 };
