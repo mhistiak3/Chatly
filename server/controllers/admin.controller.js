@@ -58,13 +58,33 @@ const getAllMessagesController = TryCatch(async (req, res) => {
     .populate("sender", "name avatar")
     .populate("chat", "groupChat");
 
+  // response
+  return res.status(200).json({ success: true, messages });
+});
 
-    // response
-    return res.status(200).json({ success: true, messages });
+// get all states
+const getAllStatsController = TryCatch(async (req, res) => {
+  const [groupsCount, usersCount, messagesCount, totaChatCount] =
+    await Promise.all([
+      Chat.countDocuments({ groupChat: true }),
+      User.countDocuments(),
+      Message.countDocuments(),
+      Chat.countDocuments(),
+    ]);
+  const statas = {
+    groupsCount,
+    usersCount,
+    messagesCount,
+    totaChatCount,
+  };
+
+  // response
+  return res.status(200).json({ success: true, statas });
 });
 
 export {
   getAllUsersController,
   getAllChatsController,
   getAllMessagesController,
+  getAllStatsController,
 };

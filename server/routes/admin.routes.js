@@ -3,6 +3,7 @@ import {
   getAllChatsController,
   getAllUsersController,
   getAllMessagesController,
+  getAllStatsController,
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
@@ -12,7 +13,7 @@ const router = express.Router();
 // router.post("/login")
 // router.get("/logout")
 
-// router.get("/states")
+router.get("/get-stats", getAllStatsController);
 router.get("/get-all-users",getAllUsersController)
 router.get("/get-all-chats", getAllChatsController);
 router.get("/get-all-messages", getAllMessagesController);
