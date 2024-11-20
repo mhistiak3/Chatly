@@ -4,13 +4,14 @@ import {
   getAllUsersController,
   getAllMessagesController,
   getAllStatsController,
+  adminLoginController,
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
 
 // admin routes
 // router.get("/")
-// router.post("/login")
+router.post("/login", adminLoginController);
 // router.get("/logout")
 
 router.get("/get-stats", getAllStatsController);

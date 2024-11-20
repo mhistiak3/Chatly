@@ -1,7 +1,36 @@
 import User from "../models/user.model.js";
 import Chat from "../models/chat.model.js";
 import Message from "../models/message.model.js";
-import { TryCatch } from "../services/custom.error.handler.js";
+import customErrorHandler, {
+  TryCatch,
+} from "../services/custom.error.handler.js";
+import { ADMIN_SECRET_KEY, JWT_SECRET } from "../config/config.js";
+import jwt from "jsonwebtoken";
+
+// admin login
+const adminLoginController = TryCatch(async (req, res) => {
+  const { secretKey } = req.body;
+  if (!secretKey) {
+    return customErrorHandler(res, "Please provide secret key", 400);
+  }
+  //   check secret key
+  const isMatch = secretKey === ADMIN_SECRET_KEY;
+  if (!isMatch) {
+    return customErrorHandler(res, "Invalid secret key", 401);
+  }
+  const token = jwt.sign({ secretKey }, JWT_SECRET, { expiresIn: "15m" });
+
+  // response and set cookie
+  return res
+    .status(200)
+    .cookie("chatly-admin-token", token, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      maxAge: 1000 * 60 * 15,
+    })
+    .json({ success: true, token, message: "Admin logged in successfully" });
+});
 
 // get all users
 const getAllUsersController = TryCatch(async (req, res) => {
@@ -72,19 +101,20 @@ const getAllStatsController = TryCatch(async (req, res) => {
       Chat.countDocuments(),
     ]);
 
-    // chart
-    const today = new Date();
-    const last7Days = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const last7DaysMessages = await Message.find({
-      createdAt: { $gte: last7Days, $lte: today },
-    }).select("createdAt");
+  // chart
+  const today = new Date();
+  const last7Days = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const last7DaysMessages = await Message.find({
+    createdAt: { $gte: last7Days, $lte: today },
+  }).select("createdAt");
 
-    const messages = new Array(7).fill(0);
-    last7DaysMessages.forEach((message) => {
-     const indexApproximate = (today.getTime() - message.createdAt.getTime()) / (1000 * 60 * 60 * 24);
-     const index = Math.floor(indexApproximate);
-     messages[6 - index ]++;
-    });
+  const messages = new Array(7).fill(0);
+  last7DaysMessages.forEach((message) => {
+    const indexApproximate =
+      (today.getTime() - message.createdAt.getTime()) / (1000 * 60 * 60 * 24);
+    const index = Math.floor(indexApproximate);
+    messages[6 - index]++;
+  });
 
   const statas = {
     groupsCount,
@@ -101,6 +131,7 @@ const getAllStatsController = TryCatch(async (req, res) => {
 
 export {
   getAllUsersController,
+  adminLoginController,
   getAllChatsController,
   getAllMessagesController,
   getAllStatsController,
