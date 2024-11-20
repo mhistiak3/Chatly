@@ -15,6 +15,7 @@ import userRoutes from "./routes/user.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import requestRoutes from "./routes/request.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 import { connectDB } from "./config/mogodb.config.js";
 import defaultErrorHandler from "./middleware/default.error.handler.js";
@@ -34,6 +35,7 @@ app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/chat", chatRoutes);
 app.use("/api/v1/message", messageRoutes);
 app.use("/api/v1/request", requestRoutes);
+app.use("/api/v1/admin", adminRoutes);
 
 // defult error handler
 app.use(defaultErrorHandler);
