@@ -5,6 +5,7 @@ import {
   getAllMessagesController,
   getAllStatsController,
   adminLoginController,
+  adminLogoutController,
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
@@ -12,7 +13,7 @@ const router = express.Router();
 // admin routes
 // router.get("/")
 router.post("/login", adminLoginController);
-// router.get("/logout")
+router.get("/logout", adminLogoutController);
 
 router.get("/get-stats", getAllStatsController);
 router.get("/get-all-users",getAllUsersController)

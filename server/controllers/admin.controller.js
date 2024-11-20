@@ -32,6 +32,18 @@ const adminLoginController = TryCatch(async (req, res) => {
     .json({ success: true, token, message: "Admin logged in successfully" });
 });
 
+// admin logout
+const adminLogoutController = TryCatch(async (req, res) => {
+  return res
+    .status(200)
+    .clearCookie("chatly-admin-token", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    })
+    .json({ success: true, message: "Admin logged out successfully" });
+});
+
 // get all users
 const getAllUsersController = TryCatch(async (req, res) => {
   const users = await User.find({});
@@ -130,7 +142,7 @@ const getAllStatsController = TryCatch(async (req, res) => {
 });
 
 export {
-  getAllUsersController,
+  getAllUsersController,adminLogoutController,
   adminLoginController,
   getAllChatsController,
   getAllMessagesController,
