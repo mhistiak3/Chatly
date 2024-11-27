@@ -60,6 +60,7 @@ const ProfilePage = () => {
     }
   };
 
+
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "background.default" }}>
       <Box

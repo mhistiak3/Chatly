@@ -4,11 +4,15 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { ThemeProvider } from "@mui/material";
 import darkTheme from "./utils/DarkTheme.js";
 import { Toaster } from "react-hot-toast";
 import { LayoutLoader, ProtectedRoute } from "./components";
+import axios from "axios";
+import { server } from "./constants/config.js";
+import { useDispatch, useSelector } from "react-redux";
+import { userExist, userNotExist } from "./store/reducers/auth.reducer.js";
 
 const Home = lazy(() => import("./pages/Home.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
@@ -27,8 +31,28 @@ const MessagesMenagement = lazy(() =>
 );
 
 const App = () => {
-  const user = true;
-  return (
+  let {user, isLoading} = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const isUser = await axios.get(`${server}/api/v1/user/profile`);
+        if (isUser.data.success) {
+          dispatch(userExist(isUser.data.user));
+        } else {
+          dispatch(userNotExist());
+        }
+      } catch (error) {
+        console.log(error.response.data.message);
+        dispatch(userNotExist());
+      }
+    })();
+  }, [dispatch])
+
+  return isLoading ? (
+    <LayoutLoader />
+  ) : (
     <ThemeProvider theme={darkTheme}>
       <Toaster />
       <BrowserRouter>
@@ -71,7 +95,6 @@ const App = () => {
           />
 
           {/* Admin */}
-
           <Route
             path="/admin/login"
             element={

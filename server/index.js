@@ -10,9 +10,10 @@
 import express from "express";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { APP_PORT, MONGO_DB_URI } from "./config/config.js";
+import { APP_PORT, CLIENT_URL, MONGO_DB_URI } from "./config/config.js";
 import userRoutes from "./routes/user.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import messageRoutes from "./routes/message.routes.js";
@@ -33,6 +34,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet({}));
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", CLIENT_URL],
+    credentials: true,
+    methods: ["GET", "POST", "PUT",  "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+
+  })
+);
+
 
 // home route
 app.get("/", (req, res) => {
