@@ -100,7 +100,8 @@ export const logoutController = TryCatch(async (req, res) => {
     .status(200)
     .clearCookie("chatly-token", {
       sameSite: "none",
-      httpOnly: true,
+      httpOnly: false,
+      secure: true,
     })
     .json({ success: true, message: "User logout success" });
 });

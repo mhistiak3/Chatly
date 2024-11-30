@@ -6,10 +6,16 @@ import {
   Chat as ChatIcon,
 } from "@mui/icons-material";
 import { Box } from "@mui/material";
-import { memo, useState } from "react";
+import { memo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { server } from "../../constants/config";
+import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { userNotExist } from "../../store/reducers/auth.reducer";
 const MenuItemBox = memo(({ openNewGroup }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const navigateToGroups = () => {
     navigate("/groups");
   };
@@ -17,7 +23,21 @@ const MenuItemBox = memo(({ openNewGroup }) => {
     navigate("/");
   };
 
-  const logoutHandler = () => {};
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${server}/api/v1/user/logout`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success("Logout Successfully");
+       dispatch(userNotExist());
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    }
+  };
   return (
     <Box
       sx={{
@@ -105,6 +125,7 @@ const MenuItemBox = memo(({ openNewGroup }) => {
         <AddIcon /> Make Group
       </Box>
       <Box
+        onClick={logoutHandler}
         sx={{
           padding: " 12px 20px",
           transition: "0.5s",
@@ -122,5 +143,5 @@ const MenuItemBox = memo(({ openNewGroup }) => {
       </Box>
     </Box>
   );
-})
+});
 export default MenuItemBox;
