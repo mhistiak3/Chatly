@@ -38,8 +38,10 @@ const App = () => {
     (async () => {
       try {
         const isUser = await axios.get(`${server}/api/v1/user/profile`);
+      
+        
         if (isUser.data.success) {
-          dispatch(userExist(isUser.data.user));
+          dispatch(userExist(true));
         } else {
           dispatch(userNotExist());
         }
@@ -49,7 +51,7 @@ const App = () => {
       }
     })();
   }, [dispatch])
-
+console.log(user);
   return isLoading ? (
     <LayoutLoader />
   ) : (

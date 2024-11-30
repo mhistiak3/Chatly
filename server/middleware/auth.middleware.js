@@ -6,6 +6,8 @@ import customErrorHandler, {
 } from "../services/custom.error.handler.js";
 
 export const isAuthenticated = TryCatch(async (req, res, next) => {
+  console.log(req);
+  
   let token = req.cookies["chatly-token"];
   if (!token) {
     return customErrorHandler(res, "You are not logged in", 401);

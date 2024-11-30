@@ -12,12 +12,18 @@ import {
 import { CameraAlt } from "@mui/icons-material";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-
+import axios from "axios";
 import { validateProfileForm } from "../utils/validators";
 import getImagePreview from "../utils/getImagePreview";
 import { VisuallyHiddenInput } from "../components";
+import { server } from "../constants/config";
+import { useDispatch } from "react-redux";
+import { userExist } from "../store/reducers/auth.reducer";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // form state
   const [form, setForm] = useState({
     name: "",
@@ -39,15 +45,43 @@ const Login = () => {
     const file = e.target.files[0];
     setAvatar(file);
     const preview = await getImagePreview(file);
-    setAvatarPreview(preview)
+    setAvatarPreview(preview);
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isLogin) {
       // validation
       const errors = validateProfileForm(form);
       if (errors.username) return toast.error(errors.username);
       if (errors.password) return toast.error(errors.password);
+
+      // login
+      try {
+        const user = await axios.post(
+          `${server}/api/v1/user/login`,
+          {
+            username: form.username,
+            password: form.password,
+          },
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (user.data.success) {
+          toast.success(user.data.message);
+          dispatch(userExist(true));
+          navigate("/");
+        } else {
+          toast.error(user.data.message);
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || error.message);
+      }
     } else {
       // validation
       const errors = validateProfileForm(form);
@@ -56,6 +90,38 @@ const Login = () => {
       if (errors.bio) return toast.error(errors.bio);
       if (errors.username) return toast.error(errors.username);
       if (errors.password) return toast.error(errors.password);
+
+      // register
+      try {
+        const formData = new FormData();
+        formData.append("name", form.name);
+        formData.append("bio", form.bio);
+        formData.append("username", form.username);
+        formData.append("password", form.password);
+        formData.append("avatar", avatar);
+
+        const user = await axios.post(
+          `${server}/api/v1/user/register`,
+          formData,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (user?.data?.success) {
+          toast.success(user.data.message);
+          dispatch(userExist(true));
+          navigate("/");
+        } else {
+          toast.error(user.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || error.message);
+      }
     }
   };
   return (
@@ -110,13 +176,13 @@ const Login = () => {
             <>
               <Stack
                 position="relative"
-                width="8rem"
+                width="6rem"
                 marginX="auto"
                 marginY="15px"
               >
                 <Avatar
-                 src={avatar && avatarPreview}
-                  sx={{ width: "8rem", height: "8rem", objectFit: "cover" }}
+                  src={avatar && avatarPreview}
+                  sx={{ width: "6rem", height: "6rem", objectFit: "cover" }}
                 />
                 <Box
                   position="absolute"
@@ -141,7 +207,7 @@ const Login = () => {
                       padding: "5px",
                     }}
                   >
-                    <CameraAlt sx={{ fontSize: "1.5rem" }} />
+                    <CameraAlt sx={{ fontSize: "1.2rem" }} />
                   </IconButton>
                 </Box>
               </Stack>

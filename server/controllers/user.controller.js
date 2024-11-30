@@ -14,6 +14,7 @@ export const registerController = TryCatch(async (req, res) => {
   if (!req.file) {
     return customErrorHandler(res, "Please select an avatar", 400);
   }
+  // 
   const avatar = {
     public_id: Date.now() + "",
     url: `https://randomuser.me/api/portraits/men/${Math.round(
@@ -45,6 +46,7 @@ export const registerController = TryCatch(async (req, res) => {
       maxAge: Number(JWT_VALID_TIME),
       sameSite: "none",
       httpOnly: true,
+      secure: true,
     })
     .json({
       success: true,
@@ -72,6 +74,7 @@ export const loginController = TryCatch(async (req, res) => {
       maxAge: Number(JWT_VALID_TIME), // 15 days in
       sameSite: "none",
       httpOnly: true,
+      secure: true,
     })
     .json({
       success: true,
