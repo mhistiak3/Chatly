@@ -6,27 +6,29 @@ import customErrorHandler, {
   TryCatch,
 } from "../services/custom.error.handler.js";
 import { createToken } from "../utils/token.handler.js";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
 
 // Create user and save it to database and set cookie
 export const registerController = TryCatch(async (req, res) => {
   const { name, username, password, bio } = req.body;
+  const file = req.file;
   // chek avatar is uploaded
-  if (!req.file) {
+  if (!file) {
     return customErrorHandler(res, "Please select an avatar", 400);
   }
-  // 
-  const avatar = {
-    public_id: Date.now() + "",
-    url: `https://randomuser.me/api/portraits/men/${Math.round(
-      Math.random() * 100
-    )}.jpg`,
-  };
 
   // check if user is exist
   const isUser = await User.findOne({ username });
   if (isUser && isUser?.username) {
     return customErrorHandler(res, "This user is already exist", 409);
   }
+
+  // upload avatar to cloudinary
+   const results = await uploadToCloudinary([file]);
+   const avatar = {
+     public_id: results[0].public_id,
+     url: results[0].secure_url,
+   };
 
   // register user
   const newUser = await User.create({
@@ -105,22 +107,20 @@ export const logoutController = TryCatch(async (req, res) => {
 
 // search user
 export const searchUserController = TryCatch(async (req, res) => {
-  const { name="" } = req.query;
-   
+  const { name = "" } = req.query;
+
   // find my friends to remove them from search list
   const myChats = await Chat.find({ groupChat: false, members: req.userId });
 
-  const allUsersFromMyChats = myChats
-    .flatMap((chat) => {
-      return chat.members;
-    })
-    
-    // all users without me and my friends
-    const allUsers = await User.find({
-      name: { $regex: name, $options: "i" },
-      _id: { $nin: allUsersFromMyChats },
-    })
-    
+  const allUsersFromMyChats = myChats.flatMap((chat) => {
+    return chat.members;
+  });
+
+  // all users without me and my friends
+  const allUsers = await User.find({
+    name: { $regex: name, $options: "i" },
+    _id: { $nin: allUsersFromMyChats },
+  });
 
   // response
   res.status(200).json({ success: true, user: allUsers });

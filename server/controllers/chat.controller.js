@@ -5,7 +5,7 @@ import Message from "../models/message.model.js";
 import customErrorHandler, {
   TryCatch,
 } from "../services/custom.error.handler.js";
-import { deleteFilesFromCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary } from "../utils/cloudinary.js";
 import { emitEvent } from "../utils/features.js";
 import {
   findNameById,
@@ -389,7 +389,7 @@ const deleteChatController = TryCatch(async (req, res) => {
   });
   // all dlete promise
   await Promise.all([
-    deleteFilesFromCloudinary(publicIds),
+    deleteFromCloudinary(publicIds),
     chat.deleteOne(),
     Message.deleteMany({ chat: chatId }),
   ]);

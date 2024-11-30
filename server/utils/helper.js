@@ -20,4 +20,12 @@ const userSockets = (members = []) => {
   
 };
 
-export { membersWithIds, findNameById, membersWithoutMe, userSockets };
+const getBase64 = (file) => `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+
+export {
+  membersWithIds,
+  findNameById,
+  membersWithoutMe,
+  userSockets,
+  getBase64,
+};
