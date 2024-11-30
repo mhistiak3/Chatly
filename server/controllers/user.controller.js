@@ -47,7 +47,7 @@ export const registerController = TryCatch(async (req, res) => {
     .cookie("chatly-token", token, {
       maxAge: Number(JWT_VALID_TIME),
       sameSite: "none",
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
     })
     .json({
@@ -75,7 +75,7 @@ export const loginController = TryCatch(async (req, res) => {
     .cookie("chatly-token", token, {
       maxAge: Number(JWT_VALID_TIME), // 15 days in
       sameSite: "none",
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
     })
     .json({

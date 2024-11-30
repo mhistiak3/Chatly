@@ -22,6 +22,7 @@ import { userExist } from "../store/reducers/auth.reducer";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // form state
@@ -50,6 +51,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (isLogin) {
       // validation
       const errors = validateProfileForm(form);
@@ -58,6 +60,7 @@ const Login = () => {
 
       // login
       try {
+        setIsLoading(true);
         const user = await axios.post(
           `${server}/api/v1/user/login`,
           {
@@ -79,9 +82,11 @@ const Login = () => {
         } else {
           toast.error(user.data.message);
         }
+        setIsLoading(false);
       } catch (error) {
         toast.error(error?.response?.data?.message || error.message);
       }
+      setIsLoading(false);
     } else {
       // validation
       const errors = validateProfileForm(form);
@@ -93,6 +98,7 @@ const Login = () => {
 
       // register
       try {
+        setIsLoading(true);
         const formData = new FormData();
         formData.append("name", form.name);
         formData.append("bio", form.bio);
@@ -118,10 +124,12 @@ const Login = () => {
         } else {
           toast.error(user.data.message);
         }
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
         toast.error(error?.response?.data?.message || error.message);
       }
+      setIsLoading(false);
     }
   };
   return (
@@ -258,6 +266,7 @@ const Login = () => {
             </>
           )}
           <Button
+            disabled={isLoading}
             type="submit"
             variant="contained"
             color="primary"

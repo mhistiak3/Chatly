@@ -37,7 +37,9 @@ const App = () => {
   useEffect(() => {
     (async () => {
       try {
-        const isUser = await axios.get(`${server}/api/v1/user/profile`);
+        const isUser = await axios.get(`${server}/api/v1/user/profile`, {
+          withCredentials: true,
+        });
       
         
         if (isUser.data.success) {
