@@ -40,10 +40,9 @@ const App = () => {
         const isUser = await axios.get(`${server}/api/v1/user/profile`, {
           withCredentials: true,
         });
-      
         
         if (isUser.data.success) {
-          dispatch(userExist(true));
+          dispatch(userExist(isUser.data.user));
         } else {
           dispatch(userNotExist());
         }

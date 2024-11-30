@@ -17,20 +17,18 @@ import {
 import MenuItemBox from "../partials/MenuItemBox";
 import { lazy, Suspense, useState } from "react";
 import Logo from "../shared/Logo";
+import { useSelector } from "react-redux";
 
 const SearchDialog = lazy(() => import("../partials/Search"));
 const NotificationsDialog = lazy(() => import("../partials/Notifications"));
 const NewGroupDialog = lazy(() => import("../partials/NewGroup"));
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const [mobile, setMobile] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const [isNotifications, setIsNotifications] = useState(false);
   const [newGroup, setNewGroup] = useState(false);
+  const user = useSelector((state) => state.auth.user);
 
-  const handleMobile = () => {
-    setMobile((prev) => !prev);
-  };
   const openSearch = () => {
     setIsSearch((prev) => !prev);
   };
@@ -86,6 +84,7 @@ const Header = () => {
             >
               <Avatar
                 alt="User Name"
+                src={user?.avatar?.url || ""}
                 sx={{
                   width: { xs: 30, sm: 40 },
                   height: { xs: 30, sm: 40 },

@@ -54,13 +54,18 @@ export const registerController = TryCatch(async (req, res) => {
       success: true,
       message: "User register success",
       token,
+      user: {
+        _id: newUser._id,
+        name: newUser.name,
+        avatar: newUser.avatar,
+      }
     });
 });
 // login user
 export const loginController = TryCatch(async (req, res) => {
   const { username, password } = req.body;
   // check if user is exist
-  const isUser = await User.findOne({ username }).select("_id password");
+  const isUser = await User.findOne({ username }).select("_id password name avatar"); 
   if (!isUser) {
     return customErrorHandler(res, "User not found", 404);
   }
@@ -82,6 +87,11 @@ export const loginController = TryCatch(async (req, res) => {
       success: true,
       message: "User login success",
       token,
+      user: {
+        _id: isUser._id,
+        name: isUser.name,
+        avatar: isUser.avatar,
+      },
     });
 });
 

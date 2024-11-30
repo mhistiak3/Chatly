@@ -13,7 +13,7 @@ const authSilce = createSlice({
       state.isLoading = false;
     },
     userNotExist(state) {
-      state.user = false;
+      state.user = null;
      state.isLoading = false;
     },
   }

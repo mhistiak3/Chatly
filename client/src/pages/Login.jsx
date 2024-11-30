@@ -77,7 +77,7 @@ const Login = () => {
 
         if (user.data.success) {
           toast.success(user.data.message);
-          dispatch(userExist(true));
+          dispatch(userExist(user.data.user));
           navigate("/");
         } else {
           toast.error(user.data.message);
@@ -119,7 +119,7 @@ const Login = () => {
 
         if (user?.data?.success) {
           toast.success(user.data.message);
-          dispatch(userExist(true));
+          dispatch(userExist(user.data.user));
           navigate("/");
         } else {
           toast.error(user.data.message);
