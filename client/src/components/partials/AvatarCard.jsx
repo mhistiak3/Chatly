@@ -22,7 +22,7 @@ const AvatarCard = ({avatar, groupChat,isOnline,name}) => {
           {avatar.slice(0, 3).map((img, idx) => (
             <Avatar
               key={idx}
-              src={img}
+              src={img.url}
               alt={`avatar-${idx}`}
               sx={{
                 width: 40,
@@ -51,7 +51,7 @@ const AvatarCard = ({avatar, groupChat,isOnline,name}) => {
         >
           <Avatar
             alt={name}
-            src={avatar[0] || ""}
+            src={avatar.url || ""}
             sx={{
               width: 50,
               height: 50,
