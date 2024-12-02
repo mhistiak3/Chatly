@@ -40,7 +40,7 @@ export const AppLayout = () => (WrappedComponent) => {
             ) : (
               <ChatList
                 chats={data?.chats}
-                chatId={Number(chatId)}
+                chatId={chatId}
                 newMessagesAlert={[
                   {
                     chatId: 1,
