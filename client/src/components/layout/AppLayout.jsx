@@ -1,21 +1,19 @@
 import { useParams } from "react-router-dom";
 import { ChatList } from "..";
-import { sampleChats } from "../../constants/smaple.data";
 import Title from "../shared/Title";
 import Header from "./Header";
 import Grid from "@mui/material/Grid2";
 import { useUserChatsQuery } from "../../store/api/api";
 import { Skeleton } from "@mui/material";
+import useErrors from "../../hooks/useErrors";
+
 export const AppLayout = () => (WrappedComponent) => {
   return (props) => {
     const params = useParams();
     const chatId = params?.chatId;
-
     // all chats
     const { isLoading, data, isError, error, refetch } = useUserChatsQuery("");
-    console.log(data);
-    
-    
+    useErrors([{ isError, error }]);
 
     const handleDeleteChat = (e, id, group) => {
       console.log(id);

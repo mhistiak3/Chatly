@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   selectedGroupChat: {
     chatId: "",
-    groupChat: false,
+    groupChat: true,
   },
 };
 const otherSilce = createSlice({
@@ -11,5 +11,5 @@ const otherSilce = createSlice({
   reducers: {},
 });
 
-// export const {  } = otherSilce.actions;
+
 export default otherSilce;

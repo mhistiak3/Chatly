@@ -52,7 +52,6 @@ const App = () => {
       }
     })();
   }, [dispatch])
-console.log(user);
   return isLoading ? (
     <LayoutLoader />
   ) : (

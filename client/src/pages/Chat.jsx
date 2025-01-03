@@ -67,7 +67,6 @@ const Chat = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-  
         height: "calc(100vh - 3.7rem)",
         position: "relative",
         backgroundColor: "#121212",
