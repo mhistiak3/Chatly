@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -9,26 +9,41 @@ import {
   Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-
 import SearchUserItem from "./SearchUserItem";
-import { smapleUsers } from "../../constants/smaple.data";
-
-
+import { useLazySearchUserQuery } from "../../store/api/api";
 
 const Search = memo(({ open, onClose }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState(smapleUsers);
-  const isLoading = false;
+  const [searchTerm, setSearchTerm] = useState();
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [searchUser] = useLazySearchUserQuery();
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    !selectedUsers.includes(user._id)
   );
   const handleAddFriend = (id) => {
-    console.log(`Added friend with id: ${id}`);
+      setSelectedUsers([...selectedUsers, id]);
+    
   };
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setIsLoading(true);
+      searchUser(searchTerm).then(({data})=>{
+        setUsers(data?.user)
+        
+      }).catch((err)=>{
+        console.log(err);
+      }).finally(()=>{
+        setIsLoading(false)
+      })
+    }, 1000);
+    return () => clearTimeout(id);
+  }, [searchTerm]);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -54,10 +69,11 @@ const Search = memo(({ open, onClose }) => {
         <List>
           {filteredUsers.map((user) => (
             <SearchUserItem
-              key={user.id}
+              key={user._id}
               user={user}
               handleAddFriend={handleAddFriend}
               isLoadin={isLoading}
+              selectedUsers={selectedUsers}
             />
           ))}
         </List>

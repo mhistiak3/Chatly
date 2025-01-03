@@ -1,10 +1,21 @@
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import {
+  Avatar,
+  IconButton,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { primaryColor } from "../../constants/colors";
-const SearchUserItem = ({ user, handleAddFriend, isLoading }) => {
+import RemoveIcon from "@mui/icons-material/Remove";
+const SearchUserItem = ({
+  user,
+  handleAddFriend,
+  isLoading,
+  selectedUsers,
+}) => {
   return (
     <ListItem
-      key={user.id}
       sx={{
         borderRadius: "8px",
         backgroundColor: "#3b3b3b",
@@ -15,10 +26,10 @@ const SearchUserItem = ({ user, handleAddFriend, isLoading }) => {
       }}
       secondaryAction={
         <IconButton
-        disabled={isLoading}
+          disabled={isLoading}
           edge="end"
           aria-label="add"
-          onClick={handleAddFriend}
+          onClick={() => handleAddFriend(user._id)}
           sx={{ color: "#fff", bgcolor: primaryColor }}
         >
           <AddIcon />
@@ -26,7 +37,7 @@ const SearchUserItem = ({ user, handleAddFriend, isLoading }) => {
       }
     >
       <ListItemAvatar>
-        <Avatar src={user.avatar} alt={user.name} />
+        <Avatar src={user?.avatar?.url} alt={user.name} />
       </ListItemAvatar>
       <ListItemText primary={user.name} sx={{ color: "#fff" }} />
     </ListItem>
