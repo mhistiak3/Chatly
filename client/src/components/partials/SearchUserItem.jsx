@@ -12,6 +12,7 @@ const SearchUserItem = ({
   user,
   handleAddFriend,
   isLoading,
+  handleLoading,
   // selectedUsers,
 }) => {
   return (
@@ -26,7 +27,7 @@ const SearchUserItem = ({
       }}
       secondaryAction={
         <IconButton
-          disabled={isLoading}
+          disabled={isLoading || handleLoading}
           edge="end"
           aria-label="add"
           onClick={() => handleAddFriend(user._id)}

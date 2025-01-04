@@ -7,6 +7,7 @@ import {
   IconButton,
   List,
   Divider,
+  Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SearchUserItem from "./SearchUserItem";
@@ -14,38 +15,23 @@ import {
   useLazySearchUserQuery,
   useSendFriendRequestMutation,
 } from "../../store/api/api";
-import { toast } from "react-hot-toast";
+import useAsyncMutation from "../../hooks/useAsyncMutation";
 
 const Search = memo(({ open, onClose }) => {
-  const [searchTerm, setSearchTerm] = useState();
+  const [searchTerm, setSearchTerm] = useState('');
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchUser] = useLazySearchUserQuery();
-  const [sendFriendRequest] = useSendFriendRequestMutation();
+  const [sendFriendRequest, isFriendRequestLoading] = useAsyncMutation(
+    useSendFriendRequestMutation
+  );
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  // const filteredUsers = users.filter(
-  //   (user) => !selectedUsers.includes(user._id)
-  // );
+  // send friend request
   const handleAddFriend = async (id) => {
-    // setSelectedUsers([...selectedUsers, id]);
-
-    try {
-      const res = await sendFriendRequest({ userId: id });
-      if (res?.data) {
-        toast.success(res?.data.message);
-      } else {
-        toast.error(res.error?.data?.message || "Something went wrong");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-    }
+    await sendFriendRequest("Friend request sending...", { userId: id });
   };
+
+  // search users
   useEffect(() => {
     const id = setTimeout(() => {
       setIsLoading(true);
@@ -75,7 +61,7 @@ const Search = memo(({ open, onClose }) => {
           fullWidth
           variant="outlined"
           value={searchTerm}
-          onChange={handleSearchChange}
+          onChange={(event) => setSearchTerm(event.target.value)}
           InputProps={{
             endAdornment: (
               <IconButton>
@@ -84,19 +70,26 @@ const Search = memo(({ open, onClose }) => {
             ),
           }}
         />
+        {isFriendRequestLoading && (
+          <Typography sx={{ paddingY: "10px" }}>
+            Sending friend request...
+          </Typography>
+        )}
         <List>
           {users.map((user) => (
             <SearchUserItem
               key={user._id}
               user={user}
               handleAddFriend={handleAddFriend}
-              isLoadin={isLoading}
+              isLoading={isLoading}
               // selectedUsers={selectedUsers}
+              handleLoading={isFriendRequestLoading}
             />
           ))}
         </List>
+
         {users.length === 0 && <Divider />}
-        {users.length === 0 && <p>No users found</p>}
+        {users.length === 0 && <Typography>No users found</Typography>}
       </DialogContent>
     </Dialog>
   );
