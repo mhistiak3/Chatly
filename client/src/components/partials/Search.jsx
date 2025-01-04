@@ -10,37 +10,55 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SearchUserItem from "./SearchUserItem";
-import { useLazySearchUserQuery } from "../../store/api/api";
+import {
+  useLazySearchUserQuery,
+  useSendFriendRequestMutation,
+} from "../../store/api/api";
+import { toast } from "react-hot-toast";
 
 const Search = memo(({ open, onClose }) => {
   const [searchTerm, setSearchTerm] = useState();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  // const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchUser] = useLazySearchUserQuery();
+  const [sendFriendRequest] = useSendFriendRequestMutation();
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredUsers = users.filter((user) =>
-    !selectedUsers.includes(user._id)
-  );
-  const handleAddFriend = (id) => {
-      setSelectedUsers([...selectedUsers, id]);
-    
+  // const filteredUsers = users.filter(
+  //   (user) => !selectedUsers.includes(user._id)
+  // );
+  const handleAddFriend = async (id) => {
+    // setSelectedUsers([...selectedUsers, id]);
+
+    try {
+      const res = await sendFriendRequest({ userId: id });
+      if (res?.data) {
+        toast.success(res?.data.message);
+      } else {
+        toast.error(res.error?.data?.message || "Something went wrong");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
   };
   useEffect(() => {
     const id = setTimeout(() => {
       setIsLoading(true);
-      searchUser(searchTerm).then(({data})=>{
-        setUsers(data?.user)
-        
-      }).catch((err)=>{
-        console.log(err);
-      }).finally(()=>{
-        setIsLoading(false)
-      })
+      searchUser(searchTerm)
+        .then(({ data }) => {
+          setUsers(data?.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }, 1000);
     return () => clearTimeout(id);
   }, [searchTerm]);
@@ -67,18 +85,18 @@ const Search = memo(({ open, onClose }) => {
           }}
         />
         <List>
-          {filteredUsers.map((user) => (
+          {users.map((user) => (
             <SearchUserItem
               key={user._id}
               user={user}
               handleAddFriend={handleAddFriend}
               isLoadin={isLoading}
-              selectedUsers={selectedUsers}
+              // selectedUsers={selectedUsers}
             />
           ))}
         </List>
-        {filteredUsers.length === 0 && <Divider />}
-        {filteredUsers.length === 0 && <p>No users found</p>}
+        {users.length === 0 && <Divider />}
+        {users.length === 0 && <p>No users found</p>}
       </DialogContent>
     </Dialog>
   );

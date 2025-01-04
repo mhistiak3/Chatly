@@ -12,7 +12,7 @@ const SearchUserItem = ({
   user,
   handleAddFriend,
   isLoading,
-  selectedUsers,
+  // selectedUsers,
 }) => {
   return (
     <ListItem
